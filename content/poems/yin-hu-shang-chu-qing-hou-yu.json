@@ -1,0 +1,15 @@
+{
+ "schemaVersion":1,"id":"yin-hu-shang-chu-qing-hou-yu","title":"饮湖上初晴后雨","fullTitle":"饮湖上初晴后雨二首·其二",
+ "aliases":["饮湖上初晴后雨二首·其二","饮湖上初晴后雨其二"],"poetId":"su-shi","dynastyId":"song","form":"七言绝句",
+ "tags":["西湖","山水","晴雨","饮酒"],
+ "stanzas":[{"id":"s1","lines":[{"id":"l1","text":"水光潋滟晴方好，"},{"id":"l2","text":"山色空蒙雨亦奇。"},{"id":"l3","text":"欲把西湖比西子，"},{"id":"l4","text":"淡妆浓抹总相宜。"}]}],
+ "famousLines":[{"id":"q1","lineIds":["l3","l4"],"text":"欲把西湖比西子，淡妆浓抹总相宜。"}],
+ "annotations":[{"id":"a1","term":"潋滟","text":"水面波光流动闪烁。","lineIds":["l1"]},{"id":"a2","term":"空蒙","text":"烟雨中朦胧缥缈的样子。","lineIds":["l2"]},{"id":"a3","term":"西子","text":"西施；这里以美人比喻西湖。","lineIds":["l3"]}],
+ "translations":[],"appreciation":null,
+ "background":{"text":"苏轼任杭州通判期间游赏西湖，描写湖山在晴日与烟雨中的不同风姿。这组诗作于熙宁六年正、二月间。","year":1073,"place":"杭州西湖","certainty":"verified"},
+ "textVariants":[{"lineId":"l2","adopted":"蒙","alternative":"濛","sourceIndex":0}],
+ "sources":[{"title":"古诗文网：饮湖上初晴后雨","url":"https://www.gushiwen.cn/shiwenv_8949464433f0.aspx","accessedAt":"2026-10-12","verification":"verified","scope":["原文","作者","朝代","注释","创作背景","异文"]},{"title":"用户提供的诗画资料","path":"D:/dev/windssea/poem/output/poetry/饮湖上初晴后雨/poem-info.txt","verification":"verified","scope":["素材对应关系","艺术场景"]}],
+ "media":{"bookmark":"poems/yin-hu-shang-chu-qing-hou-yu/bookmark.webp","thumbnail":"poems/yin-hu-shang-chu-qing-hou-yu/bookmark-thumb.webp","artwork":"poems/yin-hu-shang-chu-qing-hou-yu/artwork.webp","video":{"poster":"poems/yin-hu-shang-chu-qing-hou-yu/video-poster.webp","sources":[{"src":"poems/yin-hu-shang-chu-qing-hou-yu/motion.mp4","type":"video/mp4","quality":"original"}]}},
+ "sceneHint":{"season":"spring","timeOfDay":14,"weather":"cloudy","windStrength":0.25,"reason":"柳岸、湖光与远山烟雨的艺术入境，阴天柔光对应晴雨交替；不将西子比喻作为实际人物。"},
+ "published":true,"sortOrder":3
+}

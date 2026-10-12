@@ -1,0 +1,19 @@
+{
+ "schemaVersion":1,"id":"ding-feng-bo","title":"定风波","fullTitle":"定风波·莫听穿林打叶声",
+ "aliases":["定风波·莫听穿林打叶声","莫听穿林打叶声"],"poetId":"su-shi","dynastyId":"song","form":"词",
+ "tags":["春日","风雨","旷达","山路"],
+ "preface":"三月七日，沙湖道中遇雨，雨具先去，同行皆狼狈，余独不觉。已而遂晴，故作此词。",
+ "stanzas":[
+  {"id":"s1","lines":[{"id":"l1","text":"莫听穿林打叶声，"},{"id":"l2","text":"何妨吟啸且徐行。"},{"id":"l3","text":"竹杖芒鞋轻胜马，"},{"id":"l4","text":"谁怕？"},{"id":"l5","text":"一蓑烟雨任平生。"}]},
+  {"id":"s2","lines":[{"id":"l6","text":"料峭春风吹酒醒，"},{"id":"l7","text":"微冷，"},{"id":"l8","text":"山头斜照却相迎。"},{"id":"l9","text":"回首向来萧瑟处，"},{"id":"l10","text":"归去，"},{"id":"l11","text":"也无风雨也无晴。"}]}
+ ],
+ "famousLines":[{"id":"q1","lineIds":["l5"],"text":"一蓑烟雨任平生。"},{"id":"q2","lineIds":["l9","l10","l11"],"text":"回首向来萧瑟处，归去，也无风雨也无晴。"}],
+ "annotations":[{"id":"a1","term":"芒鞋","text":"草鞋。","lineIds":["l3"]},{"id":"a2","term":"料峭","text":"略有寒意。","lineIds":["l6"]}],
+ "translations":[],"appreciation":null,
+ "background":{"text":"元丰五年春，苏轼在黄州期间与友人出游，在沙湖途中遇雨，雨后转晴，写下此词。","year":1082,"place":"黄州沙湖","certainty":"verified"},
+ "textVariants":[{"lineId":"l9","adopted":"萧瑟","alternative":"潇洒","sourceIndex":0}],
+ "sources":[{"title":"古诗文网：定风波·莫听穿林打叶声","url":"https://www.gushiwen.cn/shiwenv_6b30455fdd3c.aspx","accessedAt":"2026-10-12","verification":"verified","scope":["原文","作者","朝代","小序","创作背景","注释","异文"]},{"title":"用户提供的诗画资料","path":"D:/dev/windssea/poem/output/poetry/定风波/poem-info.txt","verification":"verified","scope":["素材对应关系","艺术场景"]}],
+ "media":{"bookmark":"poems/ding-feng-bo/bookmark.webp","thumbnail":"poems/ding-feng-bo/bookmark-thumb.webp","artwork":"poems/ding-feng-bo/artwork.webp","video":{"poster":"poems/ding-feng-bo/video-poster.webp","sources":[{"src":"poems/ding-feng-bo/motion.mp4","type":"video/mp4","quality":"original"}]}},
+ "sceneHint":{"season":"spring","timeOfDay":17,"weather":"rain","windStrength":0.4,"reason":"春日山路烟雨与山头斜照的艺术入境；不是历史场景复原。"},
+ "published":true,"sortOrder":2
+}

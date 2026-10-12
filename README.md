@@ -8,7 +8,9 @@ React 与 Three.js 临水诗画庭院原型。设计与阶段范围见 [设计�
 
 混合场景包含远云、动态墙面阴翳、书签风动、近景花瓣、淡雾和偶发飞鸟。约每42秒出现飞鸟；轻量画质减少动态数量。打开诗画时暂停背后庭院渲染。建筑和原图悬饰仍为静态素材，后续可替换独立分层素材。
 
-固定视角浏览，桌面每段最多 6 首、手机 3 首。使用左右按钮、方向键或手机横滑切段；“寻诗”按诗名、诗人、朝代筛选，“境候”调整环境。当前只有一首测试诗，因此分页按钮暂不可用；新增诗词后自动分段，不重复书签。
+新增 CourtyardDetails：程序生成月面纹理的球体、不同深度的云雾片层、六角宫灯木框与流苏、暖色点光及灯晕。夜间月亮和宫灯渐亮，灯体绕固定挂点轻摆；手机保留一盏宫灯，轻量模式减少云层。顶部入口采用无底色的屋檐文字，检索及境候弹窗使用纤维宣纸纹理与紧凑排版。
+
+固定视角浏览，每段数量根据窗口宽高、可见红墙范围、书签与木轴宽度及风摆余量动态计算，尽量填满可用区域。使用左右按钮、方向键或手机横滑切段；“寻诗”按诗名、诗人、朝代筛选，“境候”调整环境。当前已有《大林寺桃花》《定风波》《饮湖上初晴后雨》《赠刘景文》四首；390×844每段两首，922×886可同时展示四首。诗词从悬挂书签或寻诗面板打开。
 
 点击书签进入全屏诗画，主图展开后延迟播放静音循环视频；读诗按钮切换到独立阅读页并暂停视频，观画返回继续。视频保留原比例完整显示，以窗口高度为主；左右留白使用浅色旧宣纸与木质画轴，窄屏宽度不足时等比缩小。
 
@@ -23,13 +25,19 @@ npm run content
 npm run dev
 ```
 
-素材处理前，将 demo/bookmark.png、demo/pic.png、demo/video.mp4 分别复制到 media-source/poems/dalin-si-taohua/bookmark.png、artwork.png、motion.mp4。本次已完成复制。测试素材 demo 与场景分层素材已加入 Git；media-source、public/media 和 public/content 为本地素材工作目录或生成结果，按忽略规则不提交，克隆后按以上步骤重新生成。
+素材处理前，将 demo/bookmark.png、demo/pic.png、demo/video.mp4 分别复制到 media-source/poems/dalin-si-taohua/bookmark.png、artwork.png、motion.mp4。本次已完成复制。测试素材 demo、场景分层素材及三首新增诗词的 media-source 源素材已加入 Git；public/media 和 public/content 为生成结果，不提交。克隆后准备大林寺桃花源素材，再为四首诗逐一运行 node scripts/prepare-media.mjs 对应ID，最后运行 npm run build。
 
 ## 新增诗词
 
 诗词资料优先查询 [古诗文网](https://www.gushiwen.cn)。每首诗保存具体作品页链接、查询日期、核实状态；规范见 content/source-policy.json。当前测试诗仍来自用户提供的 demo，尚未标记为网站核实。未查到的信息保留空值。
 
 复制 content/poems/dalin-si-taohua.json，使用新的稳定英文 id，维护诗人引用、原文、名句和 sceneHint。将素材放入 media-source/poems/新ID，运行 node scripts/prepare-media.mjs 新ID，再运行 npm run build。构建会检查内容与素材引用；生成文件在 public/content 和 public/media。
+
+《定风波》ID 为 ding-feng-bo，资料已核对古诗文网，原始素材来自 D:/dev/windssea/poem/output/poetry/定风波。将 bookmark.png、定风波.png、video-depth-v2/定风波-移轴立体-v2.mp4 对应复制到 media-source/poems/ding-feng-bo 下的 bookmark.png、artwork.png、motion.mp4，再运行 node scripts/prepare-media.mjs ding-feng-bo。长词竖排从右侧开始，向左滚动继续阅读。
+
+《饮湖上初晴后雨》ID 为 yin-hu-shang-chu-qing-hou-yu，对应组诗其二，资料已核对古诗文网并采用“空蒙”。原始素材来自 D:/dev/windssea/poem/output/poetry/饮湖上初晴后雨，将 painting.png、bookmark.png、video/final.mp4 对应复制到同 ID 的 media-source/poems 目录下 artwork.png、bookmark.png、motion.mp4，运行 node scripts/prepare-media.mjs yin-hu-shang-chu-qing-hou-yu。
+
+《赠刘景文》ID 为 zeng-liu-jing-wen，资料采用“最是”版本。原始素材来自 D:/dev/windssea/poem/output/poetry/赠刘景文，将 poster-v2.png、bookmark.png、video-v5/final.mp4 对应复制到同 ID 的 media-source/poems 目录下 artwork.png、bookmark.png、motion.mp4，运行 node scripts/prepare-media.mjs zeng-liu-jing-wen。
 
 ## 部署
 

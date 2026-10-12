@@ -1,0 +1,46 @@
+/* Roof lettering and small paper folios share the scene's ink and light. */
+header{top:30px;align-items:flex-start}
+.brand{gap:12px;margin-left:17%}
+.brand h1{font-size:40px;letter-spacing:.12em}
+.brand p{font-size:12px;letter-spacing:.26em}
+header nav{gap:18px;align-items:flex-start;padding-top:3px}
+.paper-tab{width:34px;height:68px;padding:7px 4px;font-size:24px;background:none;border:0;box-shadow:none;color:#f3dfb6;text-shadow:0 1px 2px #30251e,0 3px 6px #30251e99;letter-spacing:.12em}
+.paper-tab:hover,.paper-tab[aria-expanded=true]{color:#ffedc7;transform:none;text-shadow:0 1px 2px #30251e,0 3px 8px #30251eb3}
+.paper-tab:focus-visible{outline:none;text-decoration:underline;text-underline-offset:5px}
+.scene-label{background:none;box-shadow:none;font-size:12px;padding:9px 0;min-height:60px;color:#e4cfac;text-shadow:0 1px 2px #30251e,0 2px 4px #30251e99}
+main[data-scene-light=night] .paper-tab,main[data-scene-light=night] .scene-label{color:#f5e5bc;text-shadow:0 1px 2px #172127,0 3px 8px #111c24}
+main[data-scene-light=night] .paper-tab[aria-expanded=true]{color:#ffcf86}
+.search-panel,.controls{top:122px;right:5%;width:326px;padding:22px 25px 24px;border:0;border-top:1px solid #9b805747;color:#4b483b;background:radial-gradient(ellipse at 0 0,#b1986824,transparent 55%),radial-gradient(ellipse at 100% 100%,#59625512,transparent 55%),url('/scene/folio-paper.svg') center/240px 240px,#efe5cf;box-shadow:0 8px 25px #36251826,0 1px 3px #36251816}
+.search-panel{max-height:calc(100dvh - 148px)}
+.panel-heading{margin-bottom:15px;gap:12px}
+.panel-heading h2,.panel-heading label{font-size:27px;letter-spacing:.1em}
+.panel-close{font-size:15px;color:#796b56;min-height:36px}
+.search-panel input{border:0;border-bottom:1px solid #a18b6766;background:transparent;padding:10px 0;font-size:17px;min-height:42px;color:#4b483b}
+.search-panel input:focus-visible{outline:none;box-shadow:0 1px 0 #8b6046}
+.search-panel input::placeholder{color:#827762}
+.search-panel>p,.search-panel .clear-search{font-size:14px}
+.search-results button{padding:12px 0;min-height:50px;gap:10px;border-bottom-color:#ad937c26}
+.search-results .result-title{font-size:21px;line-height:1.4}
+.search-results .result-meta{font-size:13px;color:#82735c}
+.control-row{grid-template-columns:42px repeat(4,minmax(0,1fr));gap:8px;margin-bottom:11px}
+.control-row>span{font-size:14px}
+.control-row button{font-size:21px;min-height:38px}
+.control-row button[aria-pressed=true],.control-row button:hover:enabled{background:none}
+.controls label{font-size:14px;min-height:32px;margin:4px 10px 0 0}
+.search-panel button:focus-visible,.controls button:focus-visible{outline:none;text-decoration:underline;text-underline-offset:5px;text-decoration-color:#8b604680}
+@media(max-width:700px){
+ header{top:24px;left:6%;right:6%}
+ .brand{margin-left:0;gap:9px}
+ .brand h1{font-size:29px;letter-spacing:.07em}
+ .brand p{font-size:11px;margin-top:6px}
+ header nav{gap:12px;padding-top:0}
+ .paper-tab{width:29px;height:61px;font-size:22px;padding:5px 3px}
+ main[data-scene-light=day] .paper-tab{color:#363b30;text-shadow:0 1px 0 #fff4dc,0 2px 4px #76553955}
+ main[data-scene-light=day] .paper-tab[aria-expanded=true]{color:#7e3425}
+ .search-panel,.controls{top:106px;right:18px;left:18px;width:auto;padding:20px 23px 23px}
+ .search-panel{max-height:calc(100dvh - 128px)}
+ .panel-heading h2,.panel-heading label{font-size:25px}
+ .search-results .result-title{font-size:20px}
+ .search-results .result-meta{font-size:12px}
+}
+@media(max-width:360px){.brand h1{font-size:25px}.paper-tab{font-size:20px;width:25px}header nav{gap:9px}}

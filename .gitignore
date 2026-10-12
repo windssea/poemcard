@@ -2,5 +2,8 @@ node_modules/
 dist/
 public/content/
 public/media/
-media-source/
+media-source/poems/*
+!media-source/poems/ding-feng-bo/
+!media-source/poems/yin-hu-shang-chu-qing-hou-yu/
+!media-source/poems/zeng-liu-jing-wen/
 .env.local

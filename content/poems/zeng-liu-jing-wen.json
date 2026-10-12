@@ -1,0 +1,14 @@
+{
+ "schemaVersion":1,"id":"zeng-liu-jing-wen","title":"赠刘景文","aliases":[],"poetId":"su-shi","dynastyId":"song","form":"七言绝句",
+ "tags":["初冬","赠友","勉励","橙橘"],
+ "stanzas":[{"id":"s1","lines":[{"id":"l1","text":"荷尽已无擎雨盖，"},{"id":"l2","text":"菊残犹有傲霜枝。"},{"id":"l3","text":"一年好景君须记，"},{"id":"l4","text":"最是橙黄橘绿时。"}]}],
+ "famousLines":[{"id":"q1","lineIds":["l3","l4"],"text":"一年好景君须记，最是橙黄橘绿时。"}],
+ "annotations":[{"id":"a1","term":"擎雨盖","text":"像雨伞般向上托起的荷叶。","lineIds":["l1"]},{"id":"a2","term":"傲霜","text":"不畏霜寒，借以表现坚韧。","lineIds":["l2"]},{"id":"a3","term":"刘景文","text":"刘季孙，字景文，是苏轼在杭州的友人。","lineIds":[]}],
+ "translations":[],"appreciation":null,
+ "background":{"text":"元祐五年初冬，苏轼在杭州任职时写诗赠友刘季孙，借残荷、菊枝与橙橘之景勉励友人。","year":1090,"place":"杭州","certainty":"verified"},
+ "textVariants":[{"lineId":"l4","adopted":"最是","alternative":"正是","sourceIndex":0}],
+ "sources":[{"title":"古诗文网：赠刘景文","url":"https://www.gushiwen.cn/shiwenv_c987db20a4d7.aspx","accessedAt":"2026-10-12","verification":"verified","scope":["原文","作者","朝代","注释","创作背景","异文"]},{"title":"用户提供的诗画资料","path":"D:/dev/windssea/poem/output/poetry/赠刘景文/poem-info.txt","verification":"verified","scope":["素材对应关系","艺术场景"]}],
+ "media":{"bookmark":"poems/zeng-liu-jing-wen/bookmark.webp","thumbnail":"poems/zeng-liu-jing-wen/bookmark-thumb.webp","artwork":"poems/zeng-liu-jing-wen/artwork.webp","video":{"poster":"poems/zeng-liu-jing-wen/video-poster.webp","sources":[{"src":"poems/zeng-liu-jing-wen/motion.mp4","type":"video/mp4","quality":"original"}]}},
+ "sceneHint":{"season":"winter","timeOfDay":15,"weather":"clear","windStrength":0.2,"reason":"以初冬池岸、残荷菊枝和橙黄橘绿入境；远景文士相别来自用户的第二版画面设计，是艺术推演，原诗为赠友勉励诗。"},
+ "published":true,"sortOrder":4
+}
