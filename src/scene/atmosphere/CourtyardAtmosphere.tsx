@@ -1,6 +1,6 @@
 import {useEffect,useMemo,useRef} from 'react'
-import {useFrame} from '@react-three/fiber'
-import {Color,DoubleSide,Group,Mesh,MeshBasicMaterial,ShaderMaterial,Shape,ShapeGeometry} from 'three'
+import {useFrame,useThree} from '@react-three/fiber'
+import {BufferAttribute,BufferGeometry,Color,DoubleSide,Group,Mesh,MeshBasicMaterial,ShaderMaterial,Shape,ShapeGeometry} from 'three'
 import type {EnvironmentState} from '../../domain/types'
 const vertex=`varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`
 const noise=`float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(hash(i),hash(i+vec2(1.,0.)),f.x),mix(hash(i+vec2(0.,1.)),hash(i+1.),f.x),f.y);}float fbm(vec2 p){return n(p)*.55+n(p*2.07)*.27+n(p*4.13)*.12+n(p*8.3)*.06;}`
@@ -32,11 +32,37 @@ function DriftingPetals({env,reduced,low}:{env:EnvironmentState;reduced:boolean;
   <sphereGeometry args={[1,8,5]}/><meshStandardMaterial color={wet?'#e7e8e2':env.season==='autumn'?'#c99851':env.season==='summer'?'#b9caa2':i%3?'#f4e2c9':'#f7d9cc'} roughness={1}/>
  </mesh>)}</group>
 }
+function Rain({wind,reduced,low,mobile}:{wind:number;reduced:boolean;low:boolean;mobile:boolean}){
+ const {size}=useThree(),halfWidth=size.width/size.height*8.85/2
+ const geometry=useMemo(()=>{
+  const count=low?90:160,positions=new Float32Array(count*6)
+  const random=(i:number)=>{const n=Math.sin(i*127.1+63)*43758.5453;return n-Math.floor(n)}
+  for(let i=0;i<count;i++){
+   const at=i*6,x=(random(i)-.5)*(halfWidth*2+2),y=-6+random(i+200)*11,z=.55+random(i+400)*1.2,length=.09+random(i+600)*.13
+   positions.set([x,y,z,x-.018,y+length,z],at)
+  }
+  return new BufferGeometry().setAttribute('position',new BufferAttribute(positions,3))
+ },[halfWidth,low])
+ useEffect(()=>()=>geometry.dispose(),[geometry])
+ useFrame((_,dt)=>{
+  if(reduced||document.hidden)return
+  const positions=geometry.attributes.position as BufferAttribute,d=Math.min(dt,.05)
+  for(let i=0;i<positions.count;i+=2){
+   const length=positions.getY(i+1)-positions.getY(i),z=positions.getZ(i)
+   let x=positions.getX(i)+d*(.13+wind*.3),y=positions.getY(i)-d*(2.0+z*.8)
+   if(y<-6){y=5;x=x>halfWidth+1?-halfWidth-1:x}
+   if(x>halfWidth+1)x=-halfWidth-1
+   positions.setXYZ(i,x,y,z);positions.setXYZ(i+1,x-(.13+wind*.3)*length/(2+z*.8),y+length,z)
+  }
+  positions.needsUpdate=true
+ })
+ return <lineSegments geometry={geometry} frustumCulled={false} raycast={()=>null}><lineBasicMaterial color="#c5d5d4" transparent opacity={mobile?.19:.24} depthWrite={false} toneMapped={false}/></lineSegments>
+}
 export function CourtyardAtmosphere({env,reduced,low,mobile}:{env:EnvironmentState;reduced:boolean;low:boolean;mobile:boolean}){return <>
  <Veil type="cloud" position={[-3.7,2.45,-.34]} dimensions={[9.2,2.4]} env={env} reduced={reduced} mobile={mobile}/>
  <Veil type="cloud" position={[-4.6,2,-.32]} dimensions={[7.6,1]} env={env} reduced={reduced} mobile={mobile}/>
  <Veil type="shadow" position={[-2.6,-1.95,-.29]} dimensions={[10.1,3.4]} env={env} reduced={reduced} mobile={mobile}/>
  {!low&&<Veil type="haze" position={[0,-3.95,1.1]} dimensions={[16.5,1.15]} env={env} reduced={reduced} mobile={mobile}/>}
  <Bird offset={0} reduced={reduced}/>{!low&&<Bird offset={1.1} reduced={reduced}/>}
- <DriftingPetals env={env} reduced={reduced} low={low}/>
+ {env.weather==='rain'?<Rain wind={env.windStrength} reduced={reduced} low={low} mobile={mobile}/>:<DriftingPetals env={env} reduced={reduced} low={low}/>}
  </>}

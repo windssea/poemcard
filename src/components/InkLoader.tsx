@@ -14,18 +14,19 @@ export function InkLoader({active,backdrop=false,small=false}:{active:boolean;ba
   const noise=(x:number,y:number)=>{const ix=Math.floor(x),iy=Math.floor(y),u=x-ix,v=y-iy;const a=u*u*(3-2*u),b=v*v*(3-2*v);return (hash(ix,iy)*(1-a)+hash(ix+1,iy)*a)*(1-b)+(hash(ix,iy+1)*(1-a)+hash(ix+1,iy+1)*a)*b}
   for(let y=0;y<size;y++)for(let x=0;x<size;x++){
    const i=y*size+x,dx=(x-96)/83,dy=(y-96)/78,d=Math.hypot(dx,dy)
-   const coarse=noise(x*.04,y*.04),fibre=noise(x*.38,y*.11),fine=noise(x*.8,y*.65)
-   distance[i]=d+(coarse-.5)*.035+(fibre-.5)*.012
-   grain[i]=.76+fibre*.16+fine*.08
+   const coarse=noise(x*.045,y*.045),fibre=noise(x*.38,y*.085),fine=noise(x*.8,y*.65)
+   const angle=Math.atan2(dy,dx)
+   distance[i]=d+(coarse-.5)*.20+(fibre-.5)*.065+Math.sin(angle*5+.8)*.035+Math.sin(angle*9)*.018
+   grain[i]=.5+fibre*.32+fine*.18
   }
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,start=performance.now()
   let frame=0,last=-Infinity
   const draw=(now:number)=>{
    if(now-last<80){frame=requestAnimationFrame(draw);return}last=now
    const elapsed=reduced?1.8:(now-start)/1000
-   const ripples=Array.from({length:3},(_,j)=>{
-    const progress=((elapsed+j*1.4)%4.2)/4.2
-    return {radius:.12+progress*.86,strength:Math.pow(Math.sin(Math.PI*progress),2)*.21}
+   const ripples=Array.from({length:2},(_,j)=>{
+    const progress=((elapsed+j*2.8)%5.6)/5.6
+    return {radius:.08+Math.sqrt(progress)*.88,strength:Math.pow(Math.sin(Math.PI*progress),2)*.12}
    })
    for(let i=0;i<distance.length;i++){
     const d=distance[i]
@@ -33,7 +34,7 @@ export function InkLoader({active,backdrop=false,small=false}:{active:boolean;ba
     for(const ripple of ripples){
      const offset=d-ripple.radius
      // Broad capillary wash behind a softly feathered front, never a hard circle.
-     ink+=ripple.strength*(Math.exp(-Math.pow(offset/.045,2))*.42+Math.exp(-Math.pow((offset+.055)/.105,2))*.58)
+     ink+=ripple.strength*(Math.exp(-Math.pow(offset/.035,2))*.18+Math.exp(-Math.pow((offset+.085)/.15,2))*.82)
     }
     pixels.data[i*4]=67;pixels.data[i*4+1]=77;pixels.data[i*4+2]=69
     pixels.data[i*4+3]=Math.min(255,ink*grain[i]*255)

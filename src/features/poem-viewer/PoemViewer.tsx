@@ -24,10 +24,11 @@ export default function PoemViewer({id,onClose}:{id:string;onClose:()=>void}){
  const play=useCallback(()=>{const el=video.current;if(!el||mode.current||document.hidden)return;el.muted=true;void el.play().catch(e=>{if(e.name==='AbortError')return;setError(e.name==='NotAllowedError'?'轻点播放，继续进入诗画':'视频暂时未能播放，请重试')})},[])
  useEffect(()=>{
   const c=new AbortController();getPoem(id,c.signal).then(setPoem).catch(e=>{if(e.name!=='AbortError')setError(e.message)})
-  const previous=document.activeElement as HTMLElement;close.current?.focus()
+  const previous=document.activeElement as HTMLElement
   const key=(e:KeyboardEvent)=>{if(e.key==='Escape')onClose();if(e.key==='Tab'){const nodes=Array.from(document.querySelectorAll<HTMLElement>('.viewer button')).filter(n=>n.getClientRects().length>0);const first=nodes[0],last=nodes.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus()}}}
   document.addEventListener('keydown',key);return()=>{c.abort();document.removeEventListener('keydown',key);previous?.focus()}
  },[id,onClose])
+ useEffect(()=>{if(opened)close.current?.focus({preventScroll:true})},[opened])
  useEffect(()=>{if(!poem)return;const el=video.current!;const visibility=()=>{if(document.hidden)el.pause();else if(el.dataset.started&&!mode.current)play()};document.addEventListener('visibilitychange',visibility);return()=>{document.removeEventListener('visibilitychange',visibility);el.pause()}},[poem,play])
  useEffect(()=>{if(!opened||!imageReady||!poem)return;const timer=setTimeout(()=>setReady(true),500);return()=>clearTimeout(timer)},[opened,imageReady,poem])
  useEffect(()=>{if(!ready)return;const el=video.current;if(!el)return;if(isReading){el.pause()}else{el.dataset.started='yes';play()}},[ready,isReading,play])
@@ -41,10 +42,10 @@ export default function PoemViewer({id,onClose}:{id:string;onClose:()=>void}){
   {poem&&layout.desktop&&layout.reading&&<section className="desktop-reading" aria-label="竖排诗词" tabIndex={0} style={{left:layout.reading.left,top:layout.reading.top,width:layout.reading.width,height:layout.reading.height}}><VerticalPoem poem={poem}/></section>}
   {isReading&&poem&&<section className="reading-page mobile-vertical-reading" aria-label="诗词阅读" tabIndex={0}><VerticalPoem poem={poem}/></section>}
   </div>
-  <div className="viewer-toolbar" style={{top:layout.sheet.top+4,left:layout.sheet.left+layout.side,right:viewport.width-layout.sheet.left-layout.sheet.width+layout.side,padding:0}}>
+  {(opened||error)&&<div className="viewer-toolbar" style={{top:layout.sheet.top+4,left:layout.sheet.left+layout.side,right:viewport.width-layout.sheet.left-layout.sheet.width+layout.side,padding:0}}>
    {poem&&!layout.desktop&&<button className="mode-toggle" onClick={()=>setReading(!reading)} aria-label={isReading?'返回全屏诗画':'切换到读诗页面'}>{isReading?'观画':'读诗'}</button>}
-   <button className="close" ref={close} onClick={onClose}>关闭 ×</button>
-  </div>
+   <button className="close" ref={close} onClick={onClose} aria-label="关闭诗卷">关闭</button>
+  </div>}
   {!isReading&&error&&<div className="playback-message" role="alert"><p>{error}</p>{poem&&<button onClick={()=>{setReady(true);const el=video.current;if(el){el.load();play()}}}>播放 / 重试</button>}</div>}
   <InkLoader active={!unrolling&&!error}/>
  </div>
