@@ -1,4 +1,4 @@
-import {useEffect,useRef,useState} from 'react'
+import {Suspense,useEffect,useRef,useState} from 'react'
 import {useFrame,useThree} from '@react-three/fiber'
 import {useTexture} from '@react-three/drei'
 import {Group,SRGBColorSpace} from 'three'
@@ -8,7 +8,7 @@ import {breeze} from '../animation/wind'
 import {bookmarkLayout,bookmarkSlots} from '../../features/gallery/bookmark-layout'
 function Cord({height,y}:{height:number;y:number}){return <mesh position={[0,y,0]}><cylinderGeometry args={[.009,.009,height,8]}/><meshStandardMaterial color="#b59256" roughness={.9}/></mesh>}
 function Bookmark({poem,index,x,y,scale,h,cord,mobile,onSelect,onHover,wind,reduced}:{poem:PoemSummary;index:number;x:number;y:number;scale:number;h:number;cord:number;mobile:boolean;onSelect:(id:string)=>void;onHover:(p:PoemSummary|null)=>void;wind:number;reduced:boolean}){
- const group=useRef<Group>(null),tassel=useRef<Group>(null),time=useRef(0),[hover,setHover]=useState(false),map=useTexture(mediaUrl(poem.bookmark||poem.thumbnail)),{gl}=useThree();map.colorSpace=SRGBColorSpace
+ const group=useRef<Group>(null),tassel=useRef<Group>(null),time=useRef(0),[hover,setHover]=useState(false),map=useTexture(mediaUrl((mobile&&poem.bookmarkMobile)||poem.bookmark||poem.thumbnail)),{gl}=useThree();map.colorSpace=SRGBColorSpace
  useEffect(()=>{map.anisotropy=Math.min(8,gl.capabilities.getMaxAnisotropy());map.needsUpdate=true},[map,gl])
  const w=h/3
  useEffect(()=>()=>{document.body.style.cursor='auto'},[])
@@ -31,5 +31,10 @@ function Bookmark({poem,index,x,y,scale,h,cord,mobile,onSelect,onHover,wind,redu
   </group>
  </group>
 }
+function GradualBookmark(props:Parameters<typeof Bookmark>[0]){
+ const [enabled,setEnabled]=useState(false)
+ useEffect(()=>{const timer=setTimeout(()=>setEnabled(true),props.index*180);return()=>clearTimeout(timer)},[props.index])
+ return enabled?<Suspense fallback={null}><Bookmark {...props}/></Suspense>:null
+}
 export function CourtyardBookmarks({poems,mobile,onSelect,onHover,wind,reduced,page}:{poems:PoemSummary[];mobile:boolean;onSelect:(id:string)=>void;onHover:(p:PoemSummary|null)=>void;wind:number;reduced:boolean;page:number}){const {size}=useThree(),layout=bookmarkLayout(size.width,size.height),slots=bookmarkSlots(layout,poems.length);return <group key={page}>
- {poems.slice(0,layout.capacity).map((p,i)=><Bookmark key={p.id} poem={p} index={i} x={slots[i].x} y={slots[i].y} scale={layout.scale} h={layout.cardHeight} cord={layout.cord} mobile={mobile} onSelect={onSelect} onHover={onHover} wind={wind} reduced={reduced}/>)}</group>}
+ {poems.slice(0,layout.capacity).map((p,i)=><GradualBookmark key={p.id} poem={p} index={i} x={slots[i].x} y={slots[i].y} scale={layout.scale} h={layout.cardHeight} cord={layout.cord} mobile={mobile} onSelect={onSelect} onHover={onHover} wind={wind} reduced={reduced}/>)}</group>}

@@ -17,7 +17,8 @@ for(const file of await readdir('content/poems')){
  }
  if(!['spring','summer','autumn','winter'].includes(p.sceneHint.season)||p.sceneHint.timeOfDay<0||p.sceneHint.timeOfDay>24)throw Error('Invalid scene hint')
  if(!p.published)continue
- const summary={id:p.id,title:p.title,poet:poet.name,dynasty:dynasty.name,thumbnail:p.media.thumbnail,bookmark:p.media.bookmark,sortOrder:p.sortOrder}
+ const bookmarkMobile=p.media.bookmark.replace(/\.webp$/,'-mobile.webp');await access(`public/media/${bookmarkMobile}`)
+ const summary={id:p.id,title:p.title,poet:poet.name,dynasty:dynasty.name,thumbnail:p.media.thumbnail,bookmark:p.media.bookmark,bookmarkMobile,sortOrder:p.sortOrder}
  const dimensions=await mp4Dimensions(`public/media/${p.media.video.sources[0].src}`)
  index.push(summary);await writeFile(`${out}/poems/${p.id}.json`,JSON.stringify({...p,...summary,media:{...p.media,video:{...p.media.video,...dimensions}}}))
 }

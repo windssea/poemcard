@@ -13,7 +13,7 @@
  "background":{"text":"元丰五年春，苏轼在黄州期间与友人出游，在沙湖途中遇雨，雨后转晴，写下此词。","year":1082,"place":"黄州沙湖","certainty":"verified"},
  "textVariants":[{"lineId":"l9","adopted":"萧瑟","alternative":"潇洒","sourceIndex":0}],
  "sources":[{"title":"古诗文网：定风波·莫听穿林打叶声","url":"https://www.gushiwen.cn/shiwenv_6b30455fdd3c.aspx","accessedAt":"2026-10-12","verification":"verified","scope":["原文","作者","朝代","小序","创作背景","注释","异文"]},{"title":"用户提供的诗画资料","path":"D:/dev/windssea/poem/output/poetry/定风波/poem-info.txt","verification":"verified","scope":["素材对应关系","艺术场景"]}],
- "media":{"bookmark":"poems/ding-feng-bo/bookmark.webp","thumbnail":"poems/ding-feng-bo/bookmark-thumb.webp","artwork":"poems/ding-feng-bo/artwork.webp","video":{"poster":"poems/ding-feng-bo/video-poster.webp","sources":[{"src":"poems/ding-feng-bo/motion.mp4","type":"video/mp4","quality":"original"}]}},
+ "media":{"bookmark":"poems/ding-feng-bo/bookmark-v2.webp","thumbnail":"poems/ding-feng-bo/bookmark-v2-thumb.webp","artwork":"poems/ding-feng-bo/artwork.webp","video":{"poster":"poems/ding-feng-bo/video-poster.webp","sources":[{"src":"poems/ding-feng-bo/motion.mp4","type":"video/mp4","quality":"original"}]}},
  "sceneHint":{"season":"spring","timeOfDay":17,"weather":"rain","windStrength":0.4,"reason":"春日山路烟雨与山头斜照的艺术入境；不是历史场景复原。"},
  "published":true,"sortOrder":2
 }

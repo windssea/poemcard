@@ -45,6 +45,8 @@ main[data-scene-light=night] .paper-tab[aria-expanded=true]{color:#ffcf86}
 }
 @media(max-width:360px){.brand h1{font-size:25px}.paper-tab{font-size:20px;width:25px}header nav{gap:9px}}
 :root{color-scheme:only light}
+.courtyard-preview{position:absolute;display:block;max-width:none;max-height:none;pointer-events:none;transition:opacity 140ms ease}
+.viewer-load-close{position:absolute;top:34px;right:24px;border:0;background:none;color:#4c4538;font:20px var(--font-ink);z-index:3;padding:8px}
 .viewer{color-scheme:only light;forced-color-adjust:none}
 .viewer .vertical-poem h2,.viewer .vertical-lines p{color:#3d4034;-webkit-text-fill-color:#3d4034}
 .viewer .viewer-toolbar button{color:#4c4538;-webkit-text-fill-color:#4c4538}
