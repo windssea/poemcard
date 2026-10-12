@@ -34,7 +34,7 @@ function Moon({night,mobile,reduced}:{night:boolean;mobile:boolean;reduced:boole
   glow.current.opacity=globe.current.opacity*.4;group.current.visible=globe.current.opacity>.002
   group.current.position.x=(mobile?-.7:-3.8)+(reduced?0:-pointer.x*.018)
  })
- return <group ref={group} position={[mobile?-.7:-3.8,3.05,-.1]} raycast={()=>null}>
+ return <group ref={group} position={[mobile?-.7:-3.8,mobile?2.25:3.05,-.1]} raycast={()=>null}>
   <mesh position={[0,0,-.02]}><planeGeometry args={[1.45,1.45]}/><meshBasicMaterial ref={glow} map={halo} color="#c9d8e3" transparent opacity={0} depthWrite={false} toneMapped={false}/></mesh>
   <mesh><sphereGeometry args={[.26,32,24]}/><meshBasicMaterial ref={globe} map={map} color="#e4e9de" transparent opacity={0} toneMapped={false}/></mesh>
  </group>

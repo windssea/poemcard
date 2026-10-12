@@ -44,3 +44,17 @@ main[data-scene-light=night] .paper-tab[aria-expanded=true]{color:#ffcf86}
  .search-results .result-meta{font-size:12px}
 }
 @media(max-width:360px){.brand h1{font-size:25px}.paper-tab{font-size:20px;width:25px}header nav{gap:9px}}
+:root{color-scheme:only light}
+.viewer{color-scheme:only light;forced-color-adjust:none}
+.viewer .vertical-poem h2,.viewer .vertical-lines p{color:#3d4034;-webkit-text-fill-color:#3d4034}
+.viewer .viewer-toolbar button{color:#4c4538;-webkit-text-fill-color:#4c4538}
+.viewer .poet-seal span{-webkit-text-fill-color:#98432c}
+@media(max-width:700px){
+ header{top:max(14px,env(safe-area-inset-top));left:5%;right:5%}
+ .brand h1{font-size:26px}.brand p{display:none}.seal{font-size:17px;padding:5px 4px}
+ .paper-tab{height:54px;font-size:20px;padding:3px;width:26px;white-space:nowrap}
+ .gallery-dock{bottom:max(2.5%,env(safe-area-inset-bottom))}
+ .search-panel,.controls{top:78px}
+ .mobile-vertical-reading{inset:82px 32px 42px}
+ .viewer-toolbar button{font-size:19px}
+}
