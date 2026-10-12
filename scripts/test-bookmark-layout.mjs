@@ -11,6 +11,7 @@ for(const width of [200,280,320,390,699,700,768,922,1024,1280,1440,2560]){
   else assert.ok(layout.footprint+layout.capacity*layout.pitch>available-1e-7)
   for(let count=1;count<=layout.capacity;count++){
    const slots=bookmarkSlots(layout,count)
+   if(layout.mobile)assert.ok(slots.every(slot=>slot.y===layout.anchor),'Mobile bookmarks must occupy one row')
    for(const {x,y} of slots){assert.ok(x-layout.footprint/2>=layout.left-1e-7);assert.ok(x+layout.footprint/2<=layout.right+1e-7);if(layout.mobile)assert.ok(y-(layout.cardHeight+layout.cord+.47)*layout.scale>=layout.bottom-1e-7)}
    for(let i=1;i<slots.length;i++)if(slots[i].y===slots[i-1].y)assert.ok(slots[i].x-slots[i-1].x>=layout.footprint-1e-7)
   }

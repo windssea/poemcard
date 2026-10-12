@@ -8,10 +8,11 @@ import {breeze} from '../animation/wind'
 import {bookmarkLayout,bookmarkSlots} from '../../features/gallery/bookmark-layout'
 function Cord({height,y}:{height:number;y:number}){return <mesh position={[0,y,0]}><cylinderGeometry args={[.009,.009,height,8]}/><meshStandardMaterial color="#b59256" roughness={.9}/></mesh>}
 function Bookmark({poem,index,x,y,scale,h,cord,mobile,onSelect,onHover,wind,reduced}:{poem:PoemSummary;index:number;x:number;y:number;scale:number;h:number;cord:number;mobile:boolean;onSelect:(id:string)=>void;onHover:(p:PoemSummary|null)=>void;wind:number;reduced:boolean}){
- const group=useRef<Group>(null),tassel=useRef<Group>(null),time=useRef(0),[hover,setHover]=useState(false),map=useTexture(mediaUrl(poem.thumbnail));map.colorSpace=SRGBColorSpace
+ const group=useRef<Group>(null),tassel=useRef<Group>(null),time=useRef(0),[hover,setHover]=useState(false),map=useTexture(mediaUrl(poem.bookmark||poem.thumbnail)),{gl}=useThree();map.colorSpace=SRGBColorSpace
+ useEffect(()=>{map.anisotropy=Math.min(8,gl.capabilities.getMaxAnisotropy());map.needsUpdate=true},[map,gl])
  const w=h/3
  useEffect(()=>()=>{document.body.style.cursor='auto'},[])
- useFrame((_,dt)=>{if(!group.current)return;const d=Math.min(dt,.05);if(!reduced&&!document.hidden)time.current+=d;const t=time.current,w=breeze(t,wind);group.current.rotation.z=reduced?0:Math.sin(t*.65+index)*(.012+w*.06);group.current.rotation.y=reduced?0:Math.sin(t*.4+index)*(.012+w*.055);if(tassel.current)tassel.current.rotation.z=reduced?0:Math.sin(t*.9+index+.6)*w*.18})
+ useFrame((_,dt)=>{if(!group.current)return;const d=Math.min(dt,.05);if(!reduced&&!document.hidden)time.current+=d;const t=time.current,w=breeze(t,wind);group.current.rotation.z=reduced?0:Math.sin(t*.65+index)*(mobile?.004+w*.014:.012+w*.06);group.current.rotation.y=reduced?0:Math.sin(t*.4+index)*(.012+w*.055);if(tassel.current)tassel.current.rotation.z=reduced?0:Math.sin(t*.9+index+.6)*w*.18})
  const events={onClick:(e:any)=>{e.stopPropagation();onSelect(poem.id)},onPointerOver:()=>{setHover(true);onHover(poem);document.body.style.cursor='pointer'},onPointerOut:()=>{setHover(false);onHover(null);document.body.style.cursor='auto'}}
  return <group position={[x,y,.35+index%2*.06]} scale={scale}>
   <mesh position={[0,.03,0]}><torusGeometry args={[.045,.009,8,24]}/><meshStandardMaterial color="#987643" metalness={.4} roughness={.6}/></mesh>
@@ -31,5 +32,4 @@ function Bookmark({poem,index,x,y,scale,h,cord,mobile,onSelect,onHover,wind,redu
  </group>
 }
 export function CourtyardBookmarks({poems,mobile,onSelect,onHover,wind,reduced,page}:{poems:PoemSummary[];mobile:boolean;onSelect:(id:string)=>void;onHover:(p:PoemSummary|null)=>void;wind:number;reduced:boolean;page:number}){const {size}=useThree(),layout=bookmarkLayout(size.width,size.height),slots=bookmarkSlots(layout,poems.length);return <group key={page}>
- {mobile&&poems.length>2&&<mesh position={[(layout.left+layout.right)/2,layout.anchor-layout.rowStep,.29]}><boxGeometry args={[layout.right-layout.left-.12,.025,.025]}/><meshStandardMaterial color="#8b6240" roughness={.95}/></mesh>}
  {poems.slice(0,layout.capacity).map((p,i)=><Bookmark key={p.id} poem={p} index={i} x={slots[i].x} y={slots[i].y} scale={layout.scale} h={layout.cardHeight} cord={layout.cord} mobile={mobile} onSelect={onSelect} onHover={onHover} wind={wind} reduced={reduced}/>)}</group>}

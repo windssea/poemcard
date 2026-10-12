@@ -5,12 +5,13 @@ export function bookmarkLayout(width:number,height:number){
  const right=Math.min(halfWidth-.15,mobile?Infinity:2.6)
  const available=Math.max(.01,right-left),cardHeight=mobile?2.1:2.65
  if(mobile){
-  const cardHeight=2.3,cord=.18,tassel=.47,cameraY=-1.25,anchor=1
+  const cardHeight=4.6,cord=.18,tassel=.47,cameraY=-1.25,anchor=1
   const bottom=cameraY-8.85/2+.85,verticalSpace=anchor-bottom
-  const rawFootprint=cardHeight/3+.11+2*(cardHeight+cord)*Math.sin(.072)
-  const scale=Math.min(1,(available-.18)/2/rawFootprint,verticalSpace/(2*(cardHeight+cord+tassel)+.15))
-  const safeScale=Math.max(.01,scale),footprint=rawFootprint*safeScale,pitch=footprint+.18
-  return {mobile,left,right,scale:safeScale,footprint,pitch,capacity:4,cardHeight,cord,anchor,rowStep:(cardHeight+cord+tassel+.15)*safeScale,bottom,cameraY}
+  // Quiet mobile swing keeps four adjacent paper strips clear without wasting their width.
+  const rawFootprint=cardHeight/3+.11+2*(cardHeight+cord)*Math.sin(.018)
+  const gap=.075,scale=Math.min(1,(available-gap*3)/4/rawFootprint,verticalSpace/(cardHeight+cord+tassel))
+  const safeScale=Math.max(.01,scale),footprint=rawFootprint*safeScale,pitch=footprint+gap
+  return {mobile,left,right,scale:safeScale,footprint,pitch,capacity:4,cardHeight,cord,anchor,rowStep:0,bottom,cameraY}
  }
  // Full-strength gusts: rigid paper swings around its fixed cord end, not its centre.
  const halfFootprint=(cardHeight/3+.11)/2+(cardHeight+.31)*Math.sin(.072)
@@ -22,8 +23,8 @@ export function bookmarkLayout(width:number,height:number){
 export function bookmarkSlots(layout:ReturnType<typeof bookmarkLayout>,count:number){
  const n=Math.min(count,layout.capacity),centre=(layout.left+layout.right)/2
  if(layout.mobile){
-  const step=(layout.right-layout.left)/2
-  return Array.from({length:n},(_,i)=>{const row=Math.floor(i/2),rowCount=Math.min(2,n-row*2);return {x:centre+(i%2-(rowCount-1)/2)*step,y:layout.anchor-row*layout.rowStep}})
+  const step=(layout.right-layout.left)/n
+  return Array.from({length:n},(_,i)=>({x:centre+(i-(n-1)/2)*step,y:layout.anchor}))
  }
  const spacing=n>1?Math.min(layout.pitch*1.1,(layout.right-layout.left-layout.footprint)/(n-1)):0
  return Array.from({length:n},(_,i)=>({x:centre+(i-(n-1)/2)*spacing,y:layout.anchor}))

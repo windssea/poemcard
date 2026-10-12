@@ -16,7 +16,7 @@ for(const file of await readdir('content/poems')){
  }
  if(!['spring','summer','autumn','winter'].includes(p.sceneHint.season)||p.sceneHint.timeOfDay<0||p.sceneHint.timeOfDay>24)throw Error('Invalid scene hint')
  if(!p.published)continue
- const summary={id:p.id,title:p.title,poet:poet.name,dynasty:dynasty.name,thumbnail:p.media.thumbnail,sortOrder:p.sortOrder}
+ const summary={id:p.id,title:p.title,poet:poet.name,dynasty:dynasty.name,thumbnail:p.media.thumbnail,bookmark:p.media.bookmark,sortOrder:p.sortOrder}
  index.push(summary);await writeFile(`${out}/poems/${p.id}.json`,JSON.stringify({...p,...summary}))
 }
 index.sort((a,b)=>a.sortOrder-b.sortOrder);await writeFile(`${out}/index.json`,JSON.stringify(index));console.log(`Validated ${index.length} poems`)

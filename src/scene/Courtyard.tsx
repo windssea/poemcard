@@ -20,4 +20,4 @@ function Set({env,poems,onSelect,onHover,low,reduced,page}:Props){
  <CourtyardAtmosphere env={env} reduced={reduced} low={low} mobile={mobile}/><CourtyardDetails env={env} reduced={reduced} low={low} mobile={mobile}/><BlossomForeground env={env} reduced={reduced} mobile={mobile}/><Layout/>
  </>
 }
-export default function Courtyard(props:Props){return <Canvas orthographic shadows frameloop={props.active===false?'never':'always'} dpr={props.low?1:[1,1.5]} camera={{position:[0,0,15],zoom:100,near:.1,far:40}} gl={{antialias:true}} fallback={<div className="fallback">设备暂无法显示 3D，可从下方诗名阅读。</div>}><Suspense fallback={null}><Set {...props}/></Suspense></Canvas>}
+export default function Courtyard(props:Props){return <Canvas orthographic shadows frameloop={props.active===false?'never':'always'} dpr={props.low?[1,2]:[1,2.5]} camera={{position:[0,0,15],zoom:100,near:.1,far:40}} gl={{antialias:true}} fallback={<div className="fallback">设备暂无法显示 3D，可通过寻诗阅读。</div>}><Suspense fallback={null}><Set {...props}/></Suspense></Canvas>}
