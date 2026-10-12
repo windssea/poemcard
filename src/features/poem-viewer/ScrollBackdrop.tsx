@@ -42,8 +42,10 @@ function texture(kind:'paper'|'wood'|'silk'){
  }
  const result=new CanvasTexture(canvas);result.colorSpace=SRGBColorSpace;result.wrapS=result.wrapT=RepeatWrapping;return result
 }
-function Scroll({layout,start,onStart,onOpened,host}:{layout:Layout;start:boolean;onStart:()=>void;onOpened:()=>void;host:React.RefObject<HTMLDivElement|null>}){
+type Props={layout:Layout;start:boolean;closing:boolean;onStart:()=>void;onOpened:()=>void;onClosed:()=>void}
+function Scroll({layout,start,closing,onStart,onOpened,onClosed,host}:Props&{host:React.RefObject<HTMLDivElement|null>}){
  const opening=useRef<Group>(null),elapsed=useRef(0),notified=useRef(false),begun=useRef(false)
+ const closingElapsed=useRef(0),closingWidth=useRef<number|null>(null),closed=useRef(false)
  const progress=useMemo(()=>({value:0}),[]),soak=useMemo(()=>({value:0}),[])
  const reduced=useMemo(()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches,[])
  const {viewport,size,invalidate}=useThree(),paper=useMemo(()=>texture('paper'),[]),wood=useMemo(()=>texture('wood'),[]),silk=useMemo(()=>texture('silk'),[])
@@ -53,15 +55,22 @@ function Scroll({layout,start,onStart,onOpened,host}:{layout:Layout;start:boolea
   if(!begun.current){begun.current=true;onStart()}
   elapsed.current+=Math.min(delta,.05)
   const t=reduced?1:Math.min(1,elapsed.current/1.25)
-  const width=.04+.96*(t*t*(3-2*t))
+  let width=.04+.96*(t*t*(3-2*t))
+  if(closing){
+   if(closingWidth.current===null)closingWidth.current=progress.value
+   closingElapsed.current+=Math.min(delta,.05)
+   const c=reduced?1:Math.min(1,Math.max(0,(closingElapsed.current-.16)/.95))
+   width=closingWidth.current*(1-c*c*c*(c*(c*6-15)+10))
+   if(c===1&&!closed.current){closed.current=true;onClosed()}
+  }
   progress.value=width;soak.value=reduced?1:Math.min(1,Math.max(0,(elapsed.current-1.25)/3.6))
   for(const child of opening.current.children)if(child.userData.roller){child.position.x=child.userData.sign*layout.sheet.width*unit/2*width;child.rotation.y=child.userData.sign*(1-width)*layout.sheet.width*unit/(2*r)}
   host.current?.parentElement?.style.setProperty('--scroll-open-width',`${layout.sheet.width*width}px`)
-  host.current?.parentElement?.style.setProperty('--scroll-text-opacity',`${Math.max(0,(t-.75)/.25)}`)
-  if(t===1&&!notified.current){notified.current=true;onOpened()}
-  if(!reduced&&elapsed.current<4.85)invalidate()
+  host.current?.parentElement?.style.setProperty('--scroll-text-opacity',`${closing?1:Math.max(0,(t-.75)/.25)}`)
+  if(!closing&&t===1&&!notified.current){notified.current=true;onOpened()}
+  if(!reduced&&(closing?!closed.current:elapsed.current<4.85))invalidate()
  })
- useEffect(()=>{invalidate()},[layout,start,invalidate])
+ useEffect(()=>{invalidate()},[layout,start,closing,invalidate])
  useEffect(()=>()=>{paper.dispose();wood.dispose();silk.dispose()},[paper,wood,silk])
  const {sheet,rail,side,head,foot}=layout,unit=viewport.height/size.height
  const y=(px:number)=>(size.height/2-px)*unit
@@ -69,8 +78,8 @@ function Scroll({layout,start,onStart,onOpened,host}:{layout:Layout;start:boolea
  const paperMaterial=useMemo(()=>scrollMaterial(paper,(sheet.width-2*side)*unit/2,true,progress,soak,side*unit),[paper,sheet.width,side,unit,progress,soak])
  const silkMaterial=useMemo(()=>scrollMaterial(silk,sheet.width*unit/2,false,progress,soak),[silk,sheet.width,unit,progress,soak])
  useEffect(()=>()=>{paperMaterial.dispose();silkMaterial.dispose()},[paperMaterial,silkMaterial])
- return <><color attach="background" args={['#ded8cb']}/><ambientLight intensity={1.15}/><directionalLight position={[-3,5,9]} intensity={1.8} color="#fff4de" castShadow shadow-mapSize={[1024,1024]} shadow-camera-left={-15} shadow-camera-right={15} shadow-camera-top={15} shadow-camera-bottom={-15} shadow-normalBias={.01}/>
- <mesh position={[0,0,-.6]} receiveShadow><planeGeometry args={[viewport.width,viewport.height]}/><meshStandardMaterial color="#ddd7cc" roughness={1}/></mesh>
+ return <><ambientLight intensity={1.15}/><directionalLight position={[-3,5,9]} intensity={1.8} color="#fff4de" castShadow shadow-mapSize={[1024,1024]} shadow-camera-left={-15} shadow-camera-right={15} shadow-camera-top={15} shadow-camera-bottom={-15} shadow-normalBias={.01}/>
+ <mesh position={[0,0,-.6]} receiveShadow><planeGeometry args={[viewport.width,viewport.height]}/><shadowMaterial transparent opacity={.16} depthWrite={false}/></mesh>
  {/* Continuous mounting: backing cloth touches both rollers; paper is pasted onto it. */}
  <group ref={opening}>
  <mesh position={[0,cy,-.25]} receiveShadow material={silkMaterial}><planeGeometry args={[sheet.width*unit,h,128,16]}/></mesh>
@@ -84,4 +93,4 @@ function Scroll({layout,start,onStart,onOpened,host}:{layout:Layout;start:boolea
  </group>
  </>
 }
-export default function ScrollBackdrop({layout,start,onStart,onOpened}:{layout:Layout;start:boolean;onStart:()=>void;onOpened:()=>void}){const host=useRef<HTMLDivElement>(null);return <div ref={host} className="scroll-backdrop" aria-hidden="true"><Canvas orthographic shadows frameloop="demand" dpr={[1,1.5]} camera={{position:[0,0,10],zoom:100,near:.1,far:30}} gl={{antialias:true,alpha:false}} fallback={<div className="paper-fallback"/>}><Scroll layout={layout} start={start} onStart={onStart} onOpened={onOpened} host={host}/></Canvas></div>}
+export default function ScrollBackdrop(props:Props){const host=useRef<HTMLDivElement>(null);return <div ref={host} className="scroll-backdrop" aria-hidden="true"><Canvas orthographic shadows frameloop="demand" dpr={[1,1.5]} camera={{position:[0,0,10],zoom:100,near:.1,far:30}} gl={{antialias:true,alpha:true}} fallback={<div className="paper-fallback"/>}><Scroll {...props} host={host}/></Canvas></div>}

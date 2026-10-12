@@ -8,3 +8,17 @@
 @keyframes scroll-tools-in{from{opacity:0}to{opacity:1}}
 @media(prefers-reduced-motion:reduce){.viewer.immersive-viewer .viewer-toolbar{animation:none}}
 @media(max-width:899px){.viewer.immersive-viewer .viewer-toolbar button,.viewer.immersive-viewer.is-reading .viewer-toolbar button{font-size:18px}}
+.viewer.immersive-viewer{transition:opacity 180ms ease}
+.viewer.immersive-viewer:not(.has-unrolled) .scroll-content{visibility:hidden}
+.viewer.immersive-viewer .viewer-toolbar{transition:opacity 160ms ease}
+.viewer.immersive-viewer.is-closing .viewer-toolbar{animation:none;opacity:0;pointer-events:none}
+.viewer.immersive-viewer.is-closing .viewer-toolbar button{pointer-events:none}
+.viewer.immersive-viewer.is-closing .scroll-content{clip-path:inset(0 max(0px,calc((100% - var(--scroll-open-width,0px))/2)))!important;pointer-events:none}
+.viewer.immersive-viewer.is-closing .scroll-content *{pointer-events:none}
+.viewer.immersive-viewer.is-closing .playback-message{display:none}
+.viewer.immersive-viewer.is-returning{opacity:0;pointer-events:none}
+@media(prefers-reduced-motion:reduce){.viewer.immersive-viewer,.viewer.immersive-viewer .viewer-toolbar{transition:none}}
+.viewer.immersive-viewer{background:linear-gradient(135deg,#f6efdf1a,#192a2524),#e9e2d51a;backdrop-filter:blur(8px) saturate(.85);-webkit-backdrop-filter:blur(8px) saturate(.85)}
+.viewer.immersive-viewer .scroll-backdrop.paper-fallback{background:transparent}
+@media(max-width:899px){.viewer.immersive-viewer{backdrop-filter:blur(5px) saturate(.85);-webkit-backdrop-filter:blur(5px) saturate(.85)}}
+.viewer.immersive-viewer:not(.has-unrolled) .scroll-backdrop{visibility:hidden}

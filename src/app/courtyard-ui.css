@@ -62,3 +62,5 @@ main[data-scene-light=night] .paper-tab[aria-expanded=true]{color:#ffcf86}
  .mobile-vertical-reading{inset:82px 32px 42px}
  .viewer-toolbar button{font-size:19px}
 }
+.viewer.poem-glass-overlay,.viewer.immersive-viewer.poem-glass-overlay{background:linear-gradient(135deg,#f6efdf1a,#192a2524),#e9e2d51a;backdrop-filter:blur(8px) saturate(.85);-webkit-backdrop-filter:blur(8px) saturate(.85)}
+@media(max-width:899px){.viewer.poem-glass-overlay,.viewer.immersive-viewer.poem-glass-overlay{backdrop-filter:blur(5px) saturate(.85);-webkit-backdrop-filter:blur(5px) saturate(.85)}}

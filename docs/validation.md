@@ -140,3 +140,11 @@
 
 开启随诗入境并将庭院设置为夜、雨，打开并关闭定风波后，两项aria-pressed仍为true。截图检查月亮已缩小移到屋檐上方天空，雨表现为方向稳定的细线，没有翻转球滴。生产构建和书签60组窗口、分页、画卷比例检查通过；目标手机浏览器仍需部署复测。
 
+### 桌面加载细缝与同步收卷
+
+生产预览将ScrollBackdrop代码延迟20秒，主图就绪时scroll-content计算visibility为hidden，截图为完整宣纸加载墨迹，无中央图片细缝。桌面点击关闭后仍保留is-closing诗卷，宽度从约1172px连续收至1002px，工具opacity为0，诗画裁切宽度与画轴同步；完成后viewer数量为0。庭院预设夜、雨，返回后两项aria-pressed仍为true。390×740读诗模式关闭时保留is-reading和is-closing，竖排诗词随画轴收起。生产构建、画卷原比例与分页检查通过。
+
+透明背景预览：桌面展开大林寺桃花，卷轴四周可见模糊庭院及红墙，宣纸与文字保持清晰。计算背景rgba(233,226,213,0.1)、backdrop-filter blur(8px) saturate(0.85)。生产构建与画卷比例检查通过。
+
+点击透明连续性验证：人为延迟PoemViewer代码8秒、ScrollBackdrop代码20秒。两个等待阶段均为rgba(233,226,213,0.1)磨砂背景，无ink-loader-paper，庭院和书签始终透出；画轴启动前scroll-content、scroll-backdrop计算visibility均为hidden，不再出现整块宣纸遮罩或中央細缝。生产构建通过。
+

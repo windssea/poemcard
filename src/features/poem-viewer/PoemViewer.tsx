@@ -13,6 +13,12 @@ export default function PoemViewer({id,onClose}:{id:string;onClose:()=>void}){
  const video=useRef<HTMLVideoElement>(null),close=useRef<HTMLButtonElement>(null),mode=useRef(false)
  const [opened,setOpened]=useState(false)
  const [unrolling,setUnrolling]=useState(false)
+ const [closing,setClosing]=useState(false),[returning,setReturning]=useState(false)
+ const closingRef=useRef(false)
+ const requestClose=useCallback(()=>{if(closingRef.current)return;closingRef.current=true;video.current?.pause();if(!unrolling){onClose();return}setClosing(true)},[unrolling,onClose])
+ const closeAction=useRef(requestClose);closeAction.current=requestClose
+ const onClosed=useCallback(()=>setReturning(true),[])
+ useEffect(()=>{if(!returning)return;const timer=setTimeout(onClose,matchMedia('(prefers-reduced-motion: reduce)').matches?0:180);return()=>clearTimeout(timer)},[returning,onClose])
  const onStart=useCallback(()=>setUnrolling(true),[])
  const onOpened=useCallback(()=>setOpened(true),[])
  const [viewport,setViewport]=useState({width:window.innerWidth,height:window.innerHeight}),[ratio,setRatio]=useState(720/1264)
@@ -21,19 +27,19 @@ export default function PoemViewer({id,onClose}:{id:string;onClose:()=>void}){
  const layout=scrollLayout(viewport.width,viewport.height,sourceRatio)
  const isReading=!layout.desktop&&reading
  mode.current=isReading
- const play=useCallback(()=>{const el=video.current;if(!el||mode.current||document.hidden)return;el.muted=true;void el.play().catch(e=>{if(e.name==='AbortError')return;setError(e.name==='NotAllowedError'?'轻点播放，继续进入诗画':'视频暂时未能播放，请重试')})},[])
+ const play=useCallback(()=>{const el=video.current;if(!el||closingRef.current||mode.current||document.hidden)return;el.muted=true;void el.play().catch(e=>{if(e.name==='AbortError')return;setError(e.name==='NotAllowedError'?'轻点播放，继续进入诗画':'视频暂时未能播放，请重试')})},[])
  useEffect(()=>{
   const c=new AbortController();getPoem(id,c.signal).then(setPoem).catch(e=>{if(e.name!=='AbortError')setError(e.message)})
   const previous=document.activeElement as HTMLElement
-  const key=(e:KeyboardEvent)=>{if(e.key==='Escape')onClose();if(e.key==='Tab'){const nodes=Array.from(document.querySelectorAll<HTMLElement>('.viewer button')).filter(n=>n.getClientRects().length>0);const first=nodes[0],last=nodes.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus()}}}
+  const key=(e:KeyboardEvent)=>{if(e.key==='Escape')closeAction.current();if(e.key==='Tab'){const nodes=Array.from(document.querySelectorAll<HTMLElement>('.viewer button')).filter(n=>n.getClientRects().length>0&&!n.hasAttribute('disabled'));const first=nodes[0],last=nodes.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus()}}}
   document.addEventListener('keydown',key);return()=>{c.abort();document.removeEventListener('keydown',key);previous?.focus()}
  },[id,onClose])
  useEffect(()=>{if(opened)close.current?.focus({preventScroll:true})},[opened])
  useEffect(()=>{if(!poem)return;const el=video.current!;const visibility=()=>{if(document.hidden)el.pause();else if(el.dataset.started&&!mode.current)play()};document.addEventListener('visibilitychange',visibility);return()=>{document.removeEventListener('visibilitychange',visibility);el.pause()}},[poem,play])
  useEffect(()=>{if(!opened||!imageReady||!poem)return;const timer=setTimeout(()=>setReady(true),500);return()=>clearTimeout(timer)},[opened,imageReady,poem])
  useEffect(()=>{if(!ready)return;const el=video.current;if(!el)return;if(isReading){el.pause()}else{el.dataset.started='yes';play()}},[ready,isReading,play])
- return <div className={`viewer immersive-viewer ${isReading?'is-reading':''} ${layout.desktop?'desktop-poem-viewer':'mobile-poem-viewer'}`} role="dialog" aria-modal="true" aria-label={poem?.title||'诗词详情'}>
-  <Suspense fallback={<div className="scroll-backdrop paper-fallback"/>}><ScrollBackdrop layout={layout} start={imageReady} onStart={onStart} onOpened={onOpened}/></Suspense>
+ return <div className={`viewer immersive-viewer poem-glass-overlay ${unrolling?'has-unrolled':''} ${closing?'is-closing':''} ${returning?'is-returning':''} ${isReading?'is-reading':''} ${layout.desktop?'desktop-poem-viewer':'mobile-poem-viewer'}`} role="dialog" aria-modal="true" aria-label={poem?.title||'诗词详情'}>
+  <Suspense fallback={<div className="scroll-backdrop paper-fallback"/>}><ScrollBackdrop layout={layout} start={imageReady} closing={closing} onStart={onStart} onOpened={onOpened} onClosed={onClosed}/></Suspense>
   <div className="scroll-content">
   {poem&&<div className={`immersive-stage ${imageReady?'expanded':''}`} aria-hidden={isReading} style={{left:layout.media.left,top:layout.media.top,width:layout.media.width,height:layout.media.height}}>
    <img src={mediaUrl(poem.media.artwork)} alt={`${poem.title}主题画`} onLoad={()=>setImageReady(true)} onError={()=>setError('主图加载失败，请稍后重试')}/>
@@ -44,9 +50,9 @@ export default function PoemViewer({id,onClose}:{id:string;onClose:()=>void}){
   </div>
   {(opened||error)&&<div className="viewer-toolbar" style={{top:layout.sheet.top+4,left:layout.sheet.left+layout.side,right:viewport.width-layout.sheet.left-layout.sheet.width+layout.side,padding:0}}>
    {poem&&!layout.desktop&&<button className="mode-toggle" onClick={()=>setReading(!reading)} aria-label={isReading?'返回全屏诗画':'切换到读诗页面'}>{isReading?'观画':'读诗'}</button>}
-   <button className="close" ref={close} onClick={onClose} aria-label="关闭诗卷">关闭</button>
+   <button className="close" ref={close} onClick={requestClose} aria-label="关闭诗卷" disabled={closing}>关闭</button>
   </div>}
   {!isReading&&error&&<div className="playback-message" role="alert"><p>{error}</p>{poem&&<button onClick={()=>{setReady(true);const el=video.current;if(el){el.load();play()}}}>播放 / 重试</button>}</div>}
-  <InkLoader active={!unrolling&&!error}/>
+  <InkLoader active={!unrolling&&!error&&!closing}/>
  </div>
 }
