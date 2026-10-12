@@ -1,0 +1,32 @@
+{
+  "name": "poem-card",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "node scripts/prepare-fonts.mjs && node scripts/prepare-scene.mjs && node scripts/build-content.mjs && tsc --noEmit && vite build",
+    "content": "node scripts/build-content.mjs",
+    "preview": "vite preview --host 127.0.0.1",
+    "scene:prepare": "node scripts/prepare-scene.mjs",
+    "fonts:prepare": "node scripts/prepare-fonts.mjs"
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.0.0",
+    "@react-three/fiber": "^9.0.0",
+    "@react-three/postprocessing": "^3.2.0",
+    "postprocessing": "^6.39.5",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "three": "^0.180.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/three": "^0.180.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "sharp": "^0.34.0",
+    "typescript": "^5.9.0",
+    "vite": "^7.0.0"
+  }
+}

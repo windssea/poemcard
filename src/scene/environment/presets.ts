@@ -1,0 +1,2 @@
+import type {Season} from '../../domain/types'
+export const seasons:Record<Season,{name:string;leaf:string;ground:string;water:string}>={spring:{name:'春',leaf:'#e9a4b0',ground:'#65785b',water:'#38685e'},summer:{name:'夏',leaf:'#366345',ground:'#53674b',water:'#255c59'},autumn:{name:'秋',leaf:'#bc603b',ground:'#857353',water:'#42635d'},winter:{name:'冬',leaf:'#b7c4c1',ground:'#d8ded9',water:'#48666d'}}

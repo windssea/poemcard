@@ -1,0 +1,4 @@
+/media/*
+  Cache-Control: public, max-age=3600
+/content/*
+  Cache-Control: public, max-age=0, must-revalidate
