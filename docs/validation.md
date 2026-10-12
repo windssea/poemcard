@@ -104,3 +104,7 @@
 ### Git进度保存
 本次将定风波、饮湖上初晴后雨、赠刘景文的三组源图片与视频纳入Git，替代此前仅本地保存的规则；public/media和public/content仍由脚本生成。提交前生产构建、60组动态分页检查、诗廊分页及画卷布局检查通过。
 
+
+### Cloudflare全新克隆构建修复
+原构建缺少素材准备，导致ENOENT public/media/poems/dalin-si-taohua/bookmark.webp。构建加入prepare-all-media，按content/poems自动处理全部素材，首诗直接读取Git已提交demo，其余读取media-source。仅复制Git可见文件到独立临时目录，不包含public/media、public/content或本地大林寺源目录；复用安装依赖并模拟ffmpeg缺失，npm run build成功生成4首媒体、内容索引和dist。字体命中仓库缓存，不需下载。Cloudflare实际部署结果仍须重试后确认。
+

@@ -20,12 +20,12 @@ React 与 Three.js 临水诗画庭院原型。设计与阶段范围见 [设计�
 
 ```powershell
 npm install
-node scripts/prepare-media.mjs
+npm run media:prepare
 npm run content
 npm run dev
 ```
 
-素材处理前，将 demo/bookmark.png、demo/pic.png、demo/video.mp4 分别复制到 media-source/poems/dalin-si-taohua/bookmark.png、artwork.png、motion.mp4。本次已完成复制。测试素材 demo、场景分层素材及三首新增诗词的 media-source 源素材已加入 Git；public/media 和 public/content 为生成结果，不提交。克隆后准备大林寺桃花源素材，再为四首诗逐一运行 node scripts/prepare-media.mjs 对应ID，最后运行 npm run build。
+测试素材 demo、场景分层素材及三首新增诗词的 media-source 源素材已加入 Git；public/media 和 public/content 为生成结果，不提交。npm run build 会按 content/poems 自动生成全部诗词素材和索引。《大林寺桃花》直接使用 demo 中的已提交原图与视频，无需手动复制；其余诗词从 media-source/poems/对应ID 读取。
 
 ## 新增诗词
 
@@ -41,4 +41,4 @@ npm run dev
 
 ## 部署
 
-运行 npm run build，将 dist 部署到 Cloudflare Pages。Git 自动构建需要自行配置素材获取步骤；也可以本地构建后用 Wrangler 直接上传 dist。媒体迁移 R2 时设置 VITE_MEDIA_BASE_URL。当前仍是几何体场景原型，精细模型、连续环境过渡和真实设备性能测试尚待后续阶段。
+运行 npm run build，将 dist 部署到 Cloudflare Pages。Git 自动构建使用同一命令，脚本从已提交源素材自动生成 WebP、缩略图、视频封面和 MP4，然后校验诗词内容，不依赖本地生成目录。ffmpeg 可用时进行无损 faststart 封装；未安装时直接复制原视频，构建仍可完成，不改变帧率。也可以本地构建后用 Wrangler 上传 dist。媒体迁移 R2 时设置 VITE_MEDIA_BASE_URL。精细模型与真实设备性能测试尚待后续阶段。

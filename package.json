@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "node scripts/prepare-fonts.mjs && node scripts/prepare-scene.mjs && node scripts/build-content.mjs && tsc --noEmit && vite build",
+    "build": "node scripts/prepare-fonts.mjs && node scripts/prepare-scene.mjs && node scripts/prepare-all-media.mjs && node scripts/build-content.mjs && tsc --noEmit && vite build",
+    "media:prepare": "node scripts/prepare-all-media.mjs",
     "content": "node scripts/build-content.mjs",
     "preview": "vite preview --host 127.0.0.1",
     "scene:prepare": "node scripts/prepare-scene.mjs",
