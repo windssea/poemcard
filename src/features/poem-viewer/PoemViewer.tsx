@@ -6,11 +6,14 @@ import './desktop-reading.css'
 import {scrollLayout} from './scroll-layout'
 import {VerticalPoem} from './VerticalPoem'
 import {VideoCanvas} from './VideoCanvas'
+import {InkLoader} from '../../components/InkLoader'
 const ScrollBackdrop=lazy(()=>import('./ScrollBackdrop'))
 export default function PoemViewer({id,onClose}:{id:string;onClose:()=>void}){
  const [poem,setPoem]=useState<Poem>(),[error,setError]=useState(''),[playing,setPlaying]=useState(false),[ready,setReady]=useState(false),[imageReady,setImageReady]=useState(false),[reading,setReading]=useState(false)
  const video=useRef<HTMLVideoElement>(null),close=useRef<HTMLButtonElement>(null),mode=useRef(false)
  const [opened,setOpened]=useState(false)
+ const [unrolling,setUnrolling]=useState(false)
+ const onStart=useCallback(()=>setUnrolling(true),[])
  const onOpened=useCallback(()=>setOpened(true),[])
  const [viewport,setViewport]=useState({width:window.innerWidth,height:window.innerHeight}),[ratio,setRatio]=useState(720/1264)
  useEffect(()=>{const resize=()=>setViewport({width:window.innerWidth,height:window.innerHeight});window.addEventListener('resize',resize);return()=>window.removeEventListener('resize',resize)},[])
@@ -29,7 +32,7 @@ export default function PoemViewer({id,onClose}:{id:string;onClose:()=>void}){
  useEffect(()=>{if(!opened||!imageReady||!poem)return;const timer=setTimeout(()=>setReady(true),500);return()=>clearTimeout(timer)},[opened,imageReady,poem])
  useEffect(()=>{if(!ready)return;const el=video.current;if(!el)return;if(isReading){el.pause()}else{el.dataset.started='yes';play()}},[ready,isReading,play])
  return <div className={`viewer immersive-viewer ${isReading?'is-reading':''} ${layout.desktop?'desktop-poem-viewer':'mobile-poem-viewer'}`} role="dialog" aria-modal="true" aria-label={poem?.title||'诗词详情'}>
-  <Suspense fallback={<div className="scroll-backdrop paper-fallback"/>}><ScrollBackdrop layout={layout} start={imageReady} onOpened={onOpened}/></Suspense>
+  <Suspense fallback={<div className="scroll-backdrop paper-fallback"/>}><ScrollBackdrop layout={layout} start={imageReady} onStart={onStart} onOpened={onOpened}/></Suspense>
   <div className="scroll-content">
   {poem&&<div className={`immersive-stage ${imageReady?'expanded':''}`} aria-hidden={isReading} style={{left:layout.media.left,top:layout.media.top,width:layout.media.width,height:layout.media.height}}>
    <img src={mediaUrl(poem.media.artwork)} alt={`${poem.title}主题画`} onLoad={()=>setImageReady(true)} onError={()=>setError('主图加载失败，请稍后重试')}/>
@@ -43,7 +46,6 @@ export default function PoemViewer({id,onClose}:{id:string;onClose:()=>void}){
    <button className="close" ref={close} onClick={onClose}>关闭 ×</button>
   </div>
   {!isReading&&error&&<div className="playback-message" role="alert"><p>{error}</p>{poem&&<button onClick={()=>{setReady(true);const el=video.current;if(el){el.load();play()}}}>播放 / 重试</button>}</div>}
-  {!opened&&!error&&<div className="viewer-loading" role="status"><span>诗画徐展</span><p>{poem?'正在展开诗画…':'正在载入诗画…'}</p></div>}
-  {opened&&ready&&!playing&&!isReading&&!error&&<p className="viewer-buffering" role="status">诗画加载中…</p>}
+  <InkLoader active={!unrolling&&!error}/>
  </div>
 }

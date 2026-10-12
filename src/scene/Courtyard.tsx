@@ -7,9 +7,11 @@ import {CourtyardBookmarks} from './bookmarks/CourtyardBookmarks'
 import {CourtyardAtmosphere} from './atmosphere/CourtyardAtmosphere'
 import {BlossomForeground} from './atmosphere/BlossomForeground'
 import {CourtyardDetails} from './atmosphere/CourtyardDetails'
-type Props={env:EnvironmentState;poems:PoemSummary[];onSelect:(id:string)=>void;onHover:(p:PoemSummary|null)=>void;low:boolean;reduced:boolean;page:number;active?:boolean}
+type Props={env:EnvironmentState;poems:PoemSummary[];onSelect:(id:string)=>void;onHover:(p:PoemSummary|null)=>void;low:boolean;reduced:boolean;page:number;active?:boolean;onReady?:()=>void}
 function Layout(){const {camera,size,invalidate}=useThree();useLayoutEffect(()=>{const c=camera as OrthographicCamera;const y=size.width<700?-1.25:.28;c.zoom=size.height/8.85;c.position.set(0,y,15);c.lookAt(0,y,0);c.updateProjectionMatrix();invalidate()},[camera,size.width,size.height,invalidate]);return null}
-function Set({env,poems,onSelect,onHover,low,reduced,page}:Props){
+function Set({env,poems,onSelect,onHover,low,reduced,page,onReady}:Props){
+ const announced=useRef(false)
+ useFrame(()=>{if(!announced.current){announced.current=true;onReady?.()}})
  const {size}=useThree(),mobile=size.width<700,texture=useTexture('/scene/courtyard-clean.webp'),bg=useRef<Group>(null);texture.colorSpace=SRGBColorSpace
  const night=env.timeOfDay<6||env.timeOfDay>=19,target=useMemo(()=>new Color(night?'#3c5272':env.timeOfDay>=17?'#ffe0b5':env.weather==='rain'?'#bcc5c6':'#ffffff'),[night,env.timeOfDay,env.weather]);const tint=useRef(new Color('#fff'))
  const material=useRef<MeshBasicMaterial>(null)

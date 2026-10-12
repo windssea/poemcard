@@ -42,14 +42,15 @@ function texture(kind:'paper'|'wood'|'silk'){
  }
  const result=new CanvasTexture(canvas);result.colorSpace=SRGBColorSpace;result.wrapS=result.wrapT=RepeatWrapping;return result
 }
-function Scroll({layout,start,onOpened,host}:{layout:Layout;start:boolean;onOpened:()=>void;host:React.RefObject<HTMLDivElement|null>}){
- const opening=useRef<Group>(null),elapsed=useRef(0),notified=useRef(false)
+function Scroll({layout,start,onStart,onOpened,host}:{layout:Layout;start:boolean;onStart:()=>void;onOpened:()=>void;host:React.RefObject<HTMLDivElement|null>}){
+ const opening=useRef<Group>(null),elapsed=useRef(0),notified=useRef(false),begun=useRef(false)
  const progress=useMemo(()=>({value:0}),[]),soak=useMemo(()=>({value:0}),[])
  const reduced=useMemo(()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches,[])
  const {viewport,size,invalidate}=useThree(),paper=useMemo(()=>texture('paper'),[]),wood=useMemo(()=>texture('wood'),[]),silk=useMemo(()=>texture('silk'),[])
  useFrame((_,delta)=>{
   if(!opening.current)return
   if(!start)return
+  if(!begun.current){begun.current=true;onStart()}
   elapsed.current+=Math.min(delta,.05)
   const t=reduced?1:Math.min(1,elapsed.current/1.25)
   const width=.04+.96*(t*t*(3-2*t))
@@ -83,4 +84,4 @@ function Scroll({layout,start,onOpened,host}:{layout:Layout;start:boolean;onOpen
  </group>
  </>
 }
-export default function ScrollBackdrop({layout,start,onOpened}:{layout:Layout;start:boolean;onOpened:()=>void}){const host=useRef<HTMLDivElement>(null);return <div ref={host} className="scroll-backdrop" aria-hidden="true"><Canvas orthographic shadows frameloop="demand" dpr={[1,1.5]} camera={{position:[0,0,10],zoom:100,near:.1,far:30}} gl={{antialias:true,alpha:false}} fallback={<div className="paper-fallback"/>}><Scroll layout={layout} start={start} onOpened={onOpened} host={host}/></Canvas></div>}
+export default function ScrollBackdrop({layout,start,onStart,onOpened}:{layout:Layout;start:boolean;onStart:()=>void;onOpened:()=>void}){const host=useRef<HTMLDivElement>(null);return <div ref={host} className="scroll-backdrop" aria-hidden="true"><Canvas orthographic shadows frameloop="demand" dpr={[1,1.5]} camera={{position:[0,0,10],zoom:100,near:.1,far:30}} gl={{antialias:true,alpha:false}} fallback={<div className="paper-fallback"/>}><Scroll layout={layout} start={start} onStart={onStart} onOpened={onOpened} host={host}/></Canvas></div>}
