@@ -1,8 +1,8 @@
 import {forwardRef,useEffect,useImperativeHandle,useMemo,useRef} from 'react'
 
-type Props={src:string;className:string;onAspect:(ratio:number)=>void;onFrame:()=>void;onError:()=>void}
+type Props={src:string;className:string;width?:number;height?:number;displayWidth:number;displayHeight:number;onAspect:(ratio:number)=>void;onFrame:()=>void;onError:()=>void}
 // The decoder is deliberately detached: only a canvas is exposed to browser video overlays.
-export const VideoCanvas=forwardRef<HTMLVideoElement,Props>(function VideoCanvas({src,className,onAspect,onFrame,onError},ref){
+export const VideoCanvas=forwardRef<HTMLVideoElement,Props>(function VideoCanvas({src,className,width,height,displayWidth,displayHeight,onAspect,onFrame,onError},ref){
  const canvas=useRef<HTMLCanvasElement>(null),callbacks=useRef({onAspect,onFrame,onError})
  callbacks.current={onAspect,onFrame,onError}
  const player=useMemo(()=>{
@@ -20,7 +20,8 @@ export const VideoCanvas=forwardRef<HTMLVideoElement,Props>(function VideoCanvas
   const draw=()=>{
    if(disposed||player.paused||document.hidden)return
    if(player.readyState>=2&&player.videoWidth&&player.videoHeight){
-    if(surface.width!==player.videoWidth||surface.height!==player.videoHeight){surface.width=player.videoWidth;surface.height=player.videoHeight}
+    const frameWidth=width||player.videoWidth,frameHeight=height||player.videoHeight
+    if(surface.width!==frameWidth||surface.height!==frameHeight){surface.width=frameWidth;surface.height=frameHeight}
     // Canvas and stage match the decoded frame ratio: no black letterboxing or cropping.
     ctx.drawImage(player,0,0,surface.width,surface.height)
     surface.dataset.playback='playing';surface.dataset.frames=String(Number(surface.dataset.frames||0)+1)
@@ -29,12 +30,12 @@ export const VideoCanvas=forwardRef<HTMLVideoElement,Props>(function VideoCanvas
    if(typeof player.requestVideoFrameCallback==='function')frame=player.requestVideoFrameCallback(draw)
    else raf=requestAnimationFrame(draw)
   }
-  const metadata=()=>{if(player.videoWidth&&player.videoHeight)callbacks.current.onAspect(player.videoWidth/player.videoHeight)}
+  const metadata=()=>{if(!width&&!height&&player.videoWidth&&player.videoHeight)callbacks.current.onAspect(player.videoWidth/player.videoHeight)}
   const begin=()=>{stop();painted=false;draw()}
   const failed=()=>{stop();callbacks.current.onError()}
   player.addEventListener('loadedmetadata',metadata);player.addEventListener('playing',begin);player.addEventListener('pause',stop);player.addEventListener('error',failed)
   player.src=src;player.load()
   return()=>{disposed=true;stop();player.removeEventListener('loadedmetadata',metadata);player.removeEventListener('playing',begin);player.removeEventListener('pause',stop);player.removeEventListener('error',failed);player.pause();player.removeAttribute('src');player.load()}
- },[player,src])
- return <canvas ref={canvas} className={`video-canvas ${className}`} aria-hidden="true"/>
+ },[player,src,width,height])
+ return <canvas ref={canvas} width={width||720} height={height||1264} style={{width:displayWidth,height:displayHeight,maxWidth:'none',maxHeight:'none',aspectRatio:`${width||720} / ${height||1264}`}} className={`video-canvas ${className}`} aria-hidden="true"/>
 })

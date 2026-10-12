@@ -14,7 +14,8 @@ export default function PoemViewer({id,onClose}:{id:string;onClose:()=>void}){
  const onOpened=useCallback(()=>setOpened(true),[])
  const [viewport,setViewport]=useState({width:window.innerWidth,height:window.innerHeight}),[ratio,setRatio]=useState(720/1264)
  useEffect(()=>{const resize=()=>setViewport({width:window.innerWidth,height:window.innerHeight});window.addEventListener('resize',resize);return()=>window.removeEventListener('resize',resize)},[])
- const layout=scrollLayout(viewport.width,viewport.height,ratio)
+ const sourceRatio=poem?.media.video.width&&poem.media.video.height?poem.media.video.width/poem.media.video.height:ratio
+ const layout=scrollLayout(viewport.width,viewport.height,sourceRatio)
  const isReading=!layout.desktop&&reading
  mode.current=isReading
  const play=useCallback(()=>{const el=video.current;if(!el||mode.current||document.hidden)return;el.muted=true;void el.play().catch(e=>{if(e.name==='AbortError')return;setError(e.name==='NotAllowedError'?'轻点播放，继续进入诗画':'视频暂时未能播放，请重试')})},[])
@@ -32,16 +33,17 @@ export default function PoemViewer({id,onClose}:{id:string;onClose:()=>void}){
   <div className="scroll-content">
   {poem&&<div className={`immersive-stage ${imageReady?'expanded':''}`} aria-hidden={isReading} style={{left:layout.media.left,top:layout.media.top,width:layout.media.width,height:layout.media.height}}>
    <img src={mediaUrl(poem.media.artwork)} alt={`${poem.title}主题画`} onLoad={()=>setImageReady(true)} onError={()=>setError('主图加载失败，请稍后重试')}/>
-   <VideoCanvas ref={video} src={mediaUrl(poem.media.video.sources[0].src)} className={playing?'visible':''} onAspect={setRatio} onFrame={()=>{setPlaying(true);setError('')}} onError={()=>setError('视频暂时未能加载，请重试')}/>
+   <VideoCanvas ref={video} src={mediaUrl(poem.media.video.sources[0].src)} width={poem.media.video.width} height={poem.media.video.height} displayWidth={layout.media.width} displayHeight={layout.media.height} className={playing?'visible':''} onAspect={setRatio} onFrame={()=>{setPlaying(true);setError('')}} onError={()=>setError('视频暂时未能加载，请重试')}/>
   </div>}
+  {poem&&layout.desktop&&layout.reading&&<section className="desktop-reading" aria-label="竖排诗词" tabIndex={0} style={{left:layout.reading.left,top:layout.reading.top,width:layout.reading.width,height:layout.reading.height}}><VerticalPoem poem={poem}/></section>}
+  {isReading&&poem&&<section className="reading-page mobile-vertical-reading" aria-label="诗词阅读" tabIndex={0}><VerticalPoem poem={poem}/></section>}
+  </div>
   <div className="viewer-toolbar" style={{top:layout.sheet.top+4,left:layout.sheet.left+layout.side,right:viewport.width-layout.sheet.left-layout.sheet.width+layout.side,padding:0}}>
    {poem&&!layout.desktop&&<button className="mode-toggle" onClick={()=>setReading(!reading)} aria-label={isReading?'返回全屏诗画':'切换到读诗页面'}>{isReading?'观画':'读诗'}</button>}
    <button className="close" ref={close} onClick={onClose}>关闭 ×</button>
   </div>
-  {poem&&layout.desktop&&layout.reading&&<section className="desktop-reading" aria-label="竖排诗词" tabIndex={0} style={{left:layout.reading.left,top:layout.reading.top,width:layout.reading.width,height:layout.reading.height}}><VerticalPoem poem={poem}/></section>}
-  {isReading&&poem&&<section className="reading-page mobile-vertical-reading" aria-label="诗词阅读" tabIndex={0}><VerticalPoem poem={poem}/></section>}
   {!isReading&&error&&<div className="playback-message" role="alert"><p>{error}</p>{poem&&<button onClick={()=>{setReady(true);const el=video.current;if(el){el.load();play()}}}>播放 / 重试</button>}</div>}
-  {!poem&&!error&&<p className="immersive-loading" role="status">正在展开诗画…</p>}
-  </div>
+  {!opened&&!error&&<div className="viewer-loading" role="status"><span>诗画徐展</span><p>{poem?'正在展开诗画…':'正在载入诗画…'}</p></div>}
+  {opened&&ready&&!playing&&!isReading&&!error&&<p className="viewer-buffering" role="status">诗画加载中…</p>}
  </div>
 }

@@ -126,3 +126,7 @@ bookmark-layout.ts统一计算分页容量与Three.js书签位置。由固定正
 ### 手机单行高清书签与画布视频（替代2×2）
 手机每页最多4首，统一单行；按横向可用宽度留出窄间距，手机最大风摆角收敛至0.018弧度。完整书签纹理替代256px缩略图，开启各向异性过滤，轻量模式像素比上限2、普通模式2.5，轻量主要减少场景复杂度。删除第二行挂杆。VideoCanvas创建不挂载到DOM的静音内联视频解码器，按requestVideoFrameCallback绘制原始帧，旧浏览器回退requestAnimationFrame；画布与元数据同步比例，页面无可见原生video控件。参考 https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement/requestVideoFrameCallback 。浏览器整体禁播和专有增强仍需真机验证，不宣称网页能全面覆盖。
 
+
+### 加载占位与源比例锁定
+加载提示、缓冲提示和关闭工具条位于scroll-content裁切层之外，慢加载不再只露出中间一个字。生成内容时从MP4视频轨tkhd读取源宽高并写入media.video，无需Cloudflare安装ffprobe。画布缓冲尺寸、CSS像素尺寸及画卷布局共用源比例；浏览器元数据仅作为旧内容缺少宽高时的回退。按可用高度优先显示，宽度不足时才等比缩小，不裁剪不拉伸。当前四首均为720×1264，已与ffprobe独立核对。
+

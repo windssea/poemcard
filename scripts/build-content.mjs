@@ -1,5 +1,6 @@
 import {mkdir,readFile,readdir,writeFile,access} from 'node:fs/promises'
 import path from 'node:path'
+import {mp4Dimensions} from './mp4-dimensions.mjs'
 const out='public/content'; await mkdir(`${out}/poems`,{recursive:true})
 const index=[]; const ids=new Set();
 for(const file of await readdir('content/poems')){
@@ -17,6 +18,7 @@ for(const file of await readdir('content/poems')){
  if(!['spring','summer','autumn','winter'].includes(p.sceneHint.season)||p.sceneHint.timeOfDay<0||p.sceneHint.timeOfDay>24)throw Error('Invalid scene hint')
  if(!p.published)continue
  const summary={id:p.id,title:p.title,poet:poet.name,dynasty:dynasty.name,thumbnail:p.media.thumbnail,bookmark:p.media.bookmark,sortOrder:p.sortOrder}
- index.push(summary);await writeFile(`${out}/poems/${p.id}.json`,JSON.stringify({...p,...summary}))
+ const dimensions=await mp4Dimensions(`public/media/${p.media.video.sources[0].src}`)
+ index.push(summary);await writeFile(`${out}/poems/${p.id}.json`,JSON.stringify({...p,...summary,media:{...p.media,video:{...p.media.video,...dimensions}}}))
 }
 index.sort((a,b)=>a.sortOrder-b.sortOrder);await writeFile(`${out}/index.json`,JSON.stringify(index));console.log(`Validated ${index.length} poems`)
