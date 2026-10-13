@@ -2,6 +2,7 @@ import {useEffect,useMemo,useRef} from 'react'
 import {useFrame,useThree} from '@react-three/fiber'
 import {CanvasTexture,Group,MeshBasicMaterial,MeshStandardMaterial,PointLight,SRGBColorSpace} from 'three'
 import type {EnvironmentState} from '../../domain/types'
+import type {SceneKind} from '../environment/scenes'
 
 function atmosphericTexture(kind:'moon'|'cloud'|'glow'){
  const c=document.createElement('canvas');c.width=c.height=256
@@ -24,24 +25,24 @@ function atmosphericTexture(kind:'moon'|'cloud'|'glow'){
  const texture=new CanvasTexture(c);texture.colorSpace=SRGBColorSpace;return texture
 }
 
-function Moon({night,mobile,reduced}:{night:boolean;mobile:boolean;reduced:boolean}){
+function Moon({night,mobile,reduced,weather,sceneKind}:{night:boolean;mobile:boolean;reduced:boolean;weather:EnvironmentState['weather'];sceneKind:SceneKind}){
  const {size}=useThree(),halfWidth=size.width/size.height*8.85/2
  const map=useMemo(()=>atmosphericTexture('moon'),[]),halo=useMemo(()=>atmosphericTexture('glow'),[])
  const globe=useRef<MeshBasicMaterial>(null),glow=useRef<MeshBasicMaterial>(null),group=useRef<Group>(null)
  useEffect(()=>()=>{map.dispose();halo.dispose()},[map,halo])
  useFrame(({pointer},dt)=>{
   if(!globe.current||!glow.current||!group.current)return
-  const a=night?1:0;globe.current.opacity+=(a-globe.current.opacity)*Math.min(1,dt*1.6)
+  const a=night?(weather==='clear'?1:weather==='cloudy'?.55:.28):0;globe.current.opacity+=(a-globe.current.opacity)*Math.min(1,dt*1.6)
   glow.current.opacity=globe.current.opacity*.4;group.current.visible=globe.current.opacity>.002
   group.current.position.x=(mobile?halfWidth*.28:-3.8)+(reduced?0:-pointer.x*.018)
  })
- return <group ref={group} scale={mobile?.58:1} position={[mobile?halfWidth*.28:-3.8,mobile?2.62:3.05,-.1]} raycast={()=>null}>
+ return <group ref={group} scale={mobile?.58:1} position={[mobile?halfWidth*.28:-3.8,sceneKind==='garden'?3.4:mobile?2.62:3.05,sceneKind==='garden'?-.9:-.1]} raycast={()=>null}>
   <mesh position={[0,0,-.02]}><planeGeometry args={[1.45,1.45]}/><meshBasicMaterial ref={glow} map={halo} color="#c9d8e3" transparent opacity={0} depthWrite={false} toneMapped={false}/></mesh>
   <mesh><sphereGeometry args={[.26,32,24]}/><meshBasicMaterial ref={globe} map={map} color="#e4e9de" transparent opacity={0} toneMapped={false}/></mesh>
  </group>
 }
 
-function CloudLayers({night,mobile,reduced,low}:{night:boolean;mobile:boolean;reduced:boolean;low:boolean}){
+function CloudLayers({night,mobile,reduced,low,sceneKind}:{night:boolean;mobile:boolean;reduced:boolean;low:boolean;sceneKind:SceneKind}){
  const map=useMemo(()=>atmosphericTexture('cloud'),[]),group=useRef<Group>(null),time=useRef(0)
  useEffect(()=>()=>map.dispose(),[map])
  useFrame(({pointer},dt)=>{
@@ -49,7 +50,7 @@ function CloudLayers({night,mobile,reduced,low}:{night:boolean;mobile:boolean;re
   if(!reduced&&!document.hidden)time.current+=Math.min(dt,.05)
   group.current.children.forEach((layer,i)=>{layer.position.x=(mobile?-.5:-3.5)+Math.sin(time.current*.025+i)*.45+(reduced?0:-pointer.x*(.025+i*.025))})
  })
- return <group ref={group} raycast={()=>null}>{Array.from({length:low?2:3},(_,i)=><mesh key={i} position={[mobile?-.5:-3.5,2.75+i*.35,.02+i*.12]} scale={[1,1,1]}>
+ return <group ref={group} raycast={()=>null}>{Array.from({length:low?2:3},(_,i)=><mesh key={i} position={[mobile?-.5:-3.5,2.75+i*.35,sceneKind==='garden'?-.9+i*.02:.02+i*.12]} scale={[1,1,1]}>
   <planeGeometry args={[6.5+i*1.3,2.1]}/><meshBasicMaterial map={map} transparent opacity={night?.23:.55} color={night?'#9aafc5':'#fff8ea'} depthWrite={false} toneMapped={false}/>
  </mesh>)}</group>
 }
@@ -85,10 +86,10 @@ function PalaceLantern({x,anchor,night,reduced,wind}:{x:number;anchor:number;nig
  </group>
 }
 
-export function CourtyardDetails({env,mobile,reduced,low}:{env:EnvironmentState;mobile:boolean;reduced:boolean;low:boolean}){
+export function CourtyardDetails({env,mobile,reduced,low,sceneKind}:{env:EnvironmentState;mobile:boolean;reduced:boolean;low:boolean;sceneKind:SceneKind}){
  const {size}=useThree(),halfWidth=size.width/size.height*8.85/2,night=env.timeOfDay<6||env.timeOfDay>=19
- return <><Moon night={night} mobile={mobile} reduced={reduced}/><CloudLayers night={night} mobile={mobile} reduced={reduced} low={low}/>
-  <PalaceLantern x={mobile?halfWidth-.45:Math.min(halfWidth-.55,6.2)} anchor={mobile?2.0:2.35} night={night} reduced={reduced} wind={env.windStrength}/>
-  {!mobile&&!low&&<PalaceLantern x={Math.min(halfWidth-1.55,4.95)} anchor={1.95} night={night} reduced={reduced} wind={env.windStrength}/>}
+ return <><Moon sceneKind={sceneKind} night={night} mobile={mobile} reduced={reduced} weather={env.weather}/><CloudLayers sceneKind={sceneKind} night={night} mobile={mobile} reduced={reduced} low={low}/>
+  <PalaceLantern x={mobile?halfWidth-.45:Math.min(halfWidth-.55,6.2)} anchor={sceneKind==='garden'?(mobile?4.7:4.15):mobile?2.0:2.35} night={night} reduced={reduced} wind={env.windStrength}/>
+  {!mobile&&!low&&sceneKind==='courtyard'&&<PalaceLantern x={Math.min(halfWidth-1.55,4.95)} anchor={1.95} night={night} reduced={reduced} wind={env.windStrength}/>}
  </>
 }

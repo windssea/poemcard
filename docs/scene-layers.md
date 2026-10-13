@@ -1,5 +1,7 @@
 # 诗画界面与分层素材
 
+季节新增 courtyard-winter、courtyard-wet、blossom-winter、blossom-summer 四张同画幅素材。原始PNG在scene-source/layers，WebP由prepare-scene生成，透明枝条保留alpha。互动与后续材质路线见 [环境互动设计](environment-design.md)，实际生图提示词见 [环境素材提示词](../scene-source/environment-prompts.md)。
+
 近景枝花从底图分离后，可以以独立深度与风动幅度渲染，原始 demo/bg.png 保留。底图和枝花使用内置 imagegen 编辑生成，可能存在局部重绘；它们不是原图的无损逐像素分割。建筑和远山仍在底景中，云雾、阴翳、鸟与花瓣为独立程序层。
 
 ## 素材文件

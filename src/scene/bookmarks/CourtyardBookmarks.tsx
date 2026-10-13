@@ -6,13 +6,14 @@ import type {PoemSummary} from '../../domain/types'
 import {mediaUrl} from '../../services/content'
 import {breeze} from '../animation/wind'
 import {bookmarkLayout,bookmarkSlots} from '../../features/gallery/bookmark-layout'
+import {TextureBoundary} from '../TextureBoundary'
 function Cord({height,y}:{height:number;y:number}){return <mesh position={[0,y,0]}><cylinderGeometry args={[.009,.009,height,8]}/><meshStandardMaterial color="#b59256" roughness={.9}/></mesh>}
 function Bookmark({poem,index,x,y,scale,h,cord,mobile,onSelect,onHover,wind,reduced}:{poem:PoemSummary;index:number;x:number;y:number;scale:number;h:number;cord:number;mobile:boolean;onSelect:(id:string)=>void;onHover:(p:PoemSummary|null)=>void;wind:number;reduced:boolean}){
  const group=useRef<Group>(null),tassel=useRef<Group>(null),time=useRef(0),[hover,setHover]=useState(false),map=useTexture(mediaUrl((mobile&&poem.bookmarkMobile)||poem.bookmark||poem.thumbnail)),{gl}=useThree();map.colorSpace=SRGBColorSpace
  useEffect(()=>{map.anisotropy=Math.min(8,gl.capabilities.getMaxAnisotropy());map.needsUpdate=true},[map,gl])
  const w=h/3
  useEffect(()=>()=>{document.body.style.cursor='auto'},[])
- useFrame((_,dt)=>{if(!group.current)return;const d=Math.min(dt,.05);if(!reduced&&!document.hidden)time.current+=d;const t=time.current,w=breeze(t,wind);group.current.rotation.z=reduced?0:Math.sin(t*.65+index)*(mobile?.004+w*.014:.012+w*.06);group.current.rotation.y=reduced?0:Math.sin(t*.4+index)*(.012+w*.055);if(tassel.current)tassel.current.rotation.z=reduced?0:Math.sin(t*.9+index+.6)*w*.18})
+ useFrame((_,dt)=>{if(!group.current)return;const d=Math.min(dt,.05);if(!reduced&&!document.hidden)time.current+=d;const t=time.current,w=breeze(t,wind);group.current.rotation.z=reduced?0:(Math.sin(t*.57+index)*.86+Math.sin(t*1.03+index+.7)*.14)*(mobile?.006+w*.018:.016+w*.069);group.current.rotation.y=reduced?0:Math.sin(t*.37+index)*(.015+w*.065);if(tassel.current)tassel.current.rotation.z=reduced?0:Math.sin(t*.83+index+.6)*w*.23})
  const events={onClick:(e:any)=>{e.stopPropagation();onSelect(poem.id)},onPointerOver:()=>{setHover(true);onHover(poem);document.body.style.cursor='pointer'},onPointerOut:()=>{setHover(false);onHover(null);document.body.style.cursor='auto'}}
  return <group position={[x,y,.35+index%2*.06]} scale={scale}>
   <mesh position={[0,.03,0]}><torusGeometry args={[.045,.009,8,24]}/><meshStandardMaterial color="#987643" metalness={.4} roughness={.6}/></mesh>
@@ -34,7 +35,8 @@ function Bookmark({poem,index,x,y,scale,h,cord,mobile,onSelect,onHover,wind,redu
 function GradualBookmark(props:Parameters<typeof Bookmark>[0]){
  const [enabled,setEnabled]=useState(false)
  useEffect(()=>{const timer=setTimeout(()=>setEnabled(true),props.index*180);return()=>clearTimeout(timer)},[props.index])
- return enabled?<Suspense fallback={null}><Bookmark {...props}/></Suspense>:null
+ const url=mediaUrl((props.mobile&&props.poem.bookmarkMobile)||props.poem.bookmark||props.poem.thumbnail)
+ return enabled?<TextureBoundary urls={[url]}><Suspense fallback={null}><Bookmark {...props}/></Suspense></TextureBoundary>:null
 }
-export function CourtyardBookmarks({poems,mobile,onSelect,onHover,wind,reduced,page}:{poems:PoemSummary[];mobile:boolean;onSelect:(id:string)=>void;onHover:(p:PoemSummary|null)=>void;wind:number;reduced:boolean;page:number}){const {size}=useThree(),layout=bookmarkLayout(size.width,size.height),slots=bookmarkSlots(layout,poems.length);return <group key={page}>
+export function CourtyardBookmarks({sceneKind,poems,mobile,onSelect,onHover,wind,reduced,page}:{poems:PoemSummary[];mobile:boolean;onSelect:(id:string)=>void;onHover:(p:PoemSummary|null)=>void;wind:number;reduced:boolean;page:number;sceneKind:'courtyard'|'garden'}){const {size}=useThree(),layout=bookmarkLayout(size.width,size.height,sceneKind),slots=bookmarkSlots(layout,poems.length);return <group key={page}>
  {poems.slice(0,layout.capacity).map((p,i)=><GradualBookmark key={p.id} poem={p} index={i} x={slots[i].x} y={slots[i].y} scale={layout.scale} h={layout.cardHeight} cord={layout.cord} mobile={mobile} onSelect={onSelect} onHover={onHover} wind={wind} reduced={reduced}/>)}</group>}

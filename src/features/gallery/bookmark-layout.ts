@@ -1,24 +1,24 @@
 // Orthographic courtyard height matches the camera; bounds reserve the branches at the right.
-export function bookmarkLayout(width:number,height:number){
+export function bookmarkLayout(width:number,height:number,sceneKind:'courtyard'|'garden'='courtyard'){
  const mobile=width<700,halfWidth=Math.max(1,width)/Math.max(1,height)*8.85/2
- const left=Math.max(-halfWidth+.15,mobile?-Infinity:-7.45)
- const right=Math.min(halfWidth-.15,mobile?Infinity:2.6)
+ const left=Math.max(-halfWidth+.15,mobile?-Infinity:sceneKind==='garden'?-5.25:-7.45)
+ const right=Math.min(halfWidth-.15,mobile?Infinity:sceneKind==='garden'?5.25:2.6)
  const available=Math.max(.01,right-left),cardHeight=mobile?2.1:2.65
  if(mobile){
-  const cardHeight=4.6,cord=.18,tassel=.47,cameraY=-1.25,anchor=1
+  const cardHeight=4.6,cord=.18,tassel=.47,cameraY=sceneKind==='garden'?.28:-1.25,anchor=sceneKind==='garden'?3.65:1
   const bottom=cameraY-8.85/2+.85,verticalSpace=anchor-bottom
   // Quiet mobile swing keeps four adjacent paper strips clear without wasting their width.
-  const rawFootprint=cardHeight/3+.11+2*(cardHeight+cord)*Math.sin(.018)
+  const rawFootprint=cardHeight/3+.11+2*(cardHeight+cord)*Math.sin(.024)
   const gap=.075,scale=Math.min(1,(available-gap*3)/4/rawFootprint,verticalSpace/(cardHeight+cord+tassel))
   const safeScale=Math.max(.01,scale),footprint=rawFootprint*safeScale,pitch=footprint+gap
   return {mobile,left,right,scale:safeScale,footprint,pitch,capacity:4,cardHeight,cord,anchor,rowStep:0,bottom,cameraY}
  }
  // Full-strength gusts: rigid paper swings around its fixed cord end, not its centre.
- const halfFootprint=(cardHeight/3+.11)/2+(cardHeight+.31)*Math.sin(.072)
+ const halfFootprint=(cardHeight/3+.11)/2+(cardHeight+.31)*Math.sin(.085)
  const scale=Math.min(1,available/(halfFootprint*2)),footprint=halfFootprint*2*scale
  const pitch=footprint+.20*scale
  const capacity=Math.max(1,Math.floor((available-footprint+1e-8)/pitch)+1)
- return {mobile,left,right,scale,footprint,pitch,capacity,cardHeight,cord:.31,anchor:.8,rowStep:0,bottom:-Infinity,cameraY:.28}
+ return {mobile,left,right,scale,footprint,pitch,capacity,cardHeight,cord:.31,anchor:sceneKind==='garden'?3.65:.8,rowStep:0,bottom:-Infinity,cameraY:.28}
 }
 export function bookmarkSlots(layout:ReturnType<typeof bookmarkLayout>,count:number){
  const n=Math.min(count,layout.capacity),centre=(layout.left+layout.right)/2

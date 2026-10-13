@@ -11,3 +11,4 @@ media-source/poems/dalin-si-taohua/*
 !media-source/poems/zeng-liu-jing-wen/
 !media-source/poems/ye-yu-ji-bei/
 .env.local
+scene-source/drafts/
