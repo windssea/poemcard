@@ -24,3 +24,8 @@
 .poem-reading .vertical-poem h2{writing-mode:vertical-rl;text-orientation:upright;font-family:var(--font-ink);font-weight:400;margin:0}
 .poem-reading .vertical-attribution p{max-height:max(24px,calc(var(--reading-column-height,60dvh) - 90px))}
 .mobile-vertical-reading{padding:18px 8px}
+.desktop-reading.poem-reading{padding:18px 12px}
+.desktop-reading .vertical-poem{gap:calc(clamp(18px,2.3vw,38px)*var(--reading-density,1))}
+.desktop-reading .vertical-stanzas{gap:calc(35px*var(--reading-density,1))}
+.desktop-reading .vertical-lines{gap:calc(clamp(13px,1.7vw,27px)*var(--reading-density,1))}
+.desktop-reading .vertical-lines p{font-size:max(20px,calc(clamp(20px,1.9vw,27px)*var(--reading-density,1)))}
