@@ -1,0 +1,15 @@
+{
+ "schemaVersion":1,"id":"ye-yu-ji-bei","title":"夜雨寄北","aliases":["夜雨寄内","夜雨寄人"],"poetId":"li-shang-yin","dynastyId":"tang","form":"七言绝句",
+ "tags":["秋夜","夜雨","羁旅","思念","重逢"],
+ "stanzas":[{"id":"s1","lines":[{"id":"l1","text":"君问归期未有期，"},{"id":"l2","text":"巴山夜雨涨秋池。"},{"id":"l3","text":"何当共剪西窗烛，"},{"id":"l4","text":"却话巴山夜雨时。"}]}],
+ "famousLines":[{"id":"q1","lineIds":["l3","l4"],"text":"何当共剪西窗烛，却话巴山夜雨时。"}],
+ "annotations":[{"id":"a1","term":"寄北","text":"寄给北方亲友；收信人的具体身份有不同看法。","lineIds":[]},{"id":"a2","term":"巴山","text":"诗中泛指巴蜀一带。","lineIds":["l2","l4"]},{"id":"a3","term":"何当","text":"意为什么时候。","lineIds":["l3"]},{"id":"a4","term":"剪西窗烛","text":"剪去烛芯焦处使灯火明亮，写重逢后深夜谈心的愿望。","lineIds":["l3"]},{"id":"a5","term":"却话","text":"回头讲起、追忆。","lineIds":["l4"]}],
+ "translations":[{"id":"t1","lineIds":["l1","l2"],"text":"你问我何时归来，我却还无法确定；眼下巴山夜雨不断，秋日池水渐涨。","sourceIndex":0},{"id":"t2","lineIds":["l3","l4"],"text":"盼着有一天与你在西窗下剪烛长谈，再一起回忆今夜巴山听雨的时光。","sourceIndex":0}],
+ "appreciation":{"text":"前两句写归期未定与客地秋雨，后两句转向未来重逢，再从未来回望今夜。两次写夜雨，让眼前孤独与重聚期盼相互映照。","sourceIndex":0},
+ "background":{"text":"李商隐客居巴蜀时寄怀北方亲友之作。具体写作年份与收信人身份存在争议，保留未定，不将妻子或友人中的某一种说法写成定论。","year":null,"place":"巴蜀","certainty":"disputed"},
+ "textVariants":[],
+ "sources":[{"title":"古诗文网：夜雨寄北","url":"https://www.gushiwen.cn/shiwenv_e46c43d13b97.aspx","accessedAt":"2026-10-13","verification":"verified","scope":["原文","作者","朝代","别题","注释","译文概述","创作背景及争议","赏析概述","名句"]},{"title":"用户提供的诗画资料","path":"D:/dev/windssea/poem/output/poetry/夜雨寄北/poem-info.txt","verification":"verified","scope":["素材对应关系","艺术场景"]}],
+ "media":{"bookmark":"poems/ye-yu-ji-bei/bookmark-v2.webp","thumbnail":"poems/ye-yu-ji-bei/bookmark-v2-thumb.webp","artwork":"poems/ye-yu-ji-bei/artwork.webp","video":{"poster":"poems/ye-yu-ji-bei/video-poster.webp","sources":[{"src":"poems/ye-yu-ji-bei/motion.mp4","type":"video/mp4","quality":"original"}]}},
+ "sceneHint":{"season":"autumn","timeOfDay":22,"weather":"rain","windStrength":0.25,"reason":"秋夜临池客舍、西窗烛光与夜雨入境。建筑、人物姿态与衣着为艺术推演，不断言收信人身份。"},
+ "published":true,"sortOrder":5
+}
