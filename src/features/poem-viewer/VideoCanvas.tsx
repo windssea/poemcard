@@ -13,9 +13,10 @@ export const VideoCanvas=forwardRef<HTMLVideoElement,Props>(function VideoCanvas
  },[])
  useImperativeHandle(ref,()=>player,[player])
  useEffect(()=>{
-  const surface=canvas.current!,ctx=surface.getContext('2d',{alpha:false})
+  // An unpainted surface must stay transparent, never expose the decoder's black buffer.
+  const surface=canvas.current!,ctx=surface.getContext('2d',{alpha:true})
   if(!ctx){callbacks.current.onError();return}
-  let frame=0,raf=0,disposed=false,painted=false
+  let frame=0,raf=0,reveal=0,disposed=false,painted=false
   const stop=()=>{if(frame)player.cancelVideoFrameCallback(frame);if(raf)cancelAnimationFrame(raf);frame=raf=0;surface.dataset.playback='paused'}
   const draw=()=>{
    if(disposed||player.paused||document.hidden)return
@@ -25,7 +26,7 @@ export const VideoCanvas=forwardRef<HTMLVideoElement,Props>(function VideoCanvas
     // Canvas and stage match the decoded frame ratio: no black letterboxing or cropping.
     ctx.drawImage(player,0,0,surface.width,surface.height)
     surface.dataset.playback='playing';surface.dataset.frames=String(Number(surface.dataset.frames||0)+1)
-    if(!painted){painted=true;callbacks.current.onFrame()}
+    if(!painted){painted=true;reveal=requestAnimationFrame(()=>{reveal=requestAnimationFrame(()=>{if(!disposed)callbacks.current.onFrame()})})}
    }
    if(typeof player.requestVideoFrameCallback==='function')frame=player.requestVideoFrameCallback(draw)
    else raf=requestAnimationFrame(draw)
@@ -35,7 +36,7 @@ export const VideoCanvas=forwardRef<HTMLVideoElement,Props>(function VideoCanvas
   const failed=()=>{stop();callbacks.current.onError()}
   player.addEventListener('loadedmetadata',metadata);player.addEventListener('playing',begin);player.addEventListener('pause',stop);player.addEventListener('error',failed)
   player.src=src;player.load()
-  return()=>{disposed=true;stop();player.removeEventListener('loadedmetadata',metadata);player.removeEventListener('playing',begin);player.removeEventListener('pause',stop);player.removeEventListener('error',failed);player.pause();player.removeAttribute('src');player.load()}
+  return()=>{disposed=true;cancelAnimationFrame(reveal);stop();player.removeEventListener('loadedmetadata',metadata);player.removeEventListener('playing',begin);player.removeEventListener('pause',stop);player.removeEventListener('error',failed);player.pause();player.removeAttribute('src');player.load()}
  },[player,src,width,height])
  return <canvas ref={canvas} width={width||720} height={height||1264} style={{width:displayWidth,height:displayHeight,maxWidth:'none',maxHeight:'none',aspectRatio:`${width||720} / ${height||1264}`}} className={`video-canvas ${className}`} aria-hidden="true"/>
 })

@@ -9,16 +9,16 @@ import {BlossomForeground} from './atmosphere/BlossomForeground'
 import {CourtyardDetails} from './atmosphere/CourtyardDetails'
 import {WeatherSurface} from './environment/WeatherSurfaces'
 import {surfaceState} from './environment/surface-state'
-import {scenes,sceneView} from './environment/scenes'
+import {scenes,sceneView,sceneMedia} from './environment/scenes'
 import type {SceneKind} from './environment/scenes'
 import {TextureBoundary} from './TextureBoundary'
 type Props={env:EnvironmentState;sceneKind:SceneKind;poems:PoemSummary[];onSelect:(id:string)=>void;onHover:(p:PoemSummary|null)=>void;low:boolean;reduced:boolean;page:number;active?:boolean;onReady?:()=>void;onFallback?:()=>void}
-function Layout({kind}:{kind:SceneKind}){const {camera,size,invalidate}=useThree();useLayoutEffect(()=>{const c=camera as OrthographicCamera;const y=sceneView(kind,size.width<700).cameraY;c.zoom=size.height/8.85;c.position.set(0,y,15);c.lookAt(0,y,0);c.updateProjectionMatrix();invalidate()},[camera,size.width,size.height,invalidate,kind]);return null}
+function Layout({kind}:{kind:SceneKind}){const {camera,size,invalidate}=useThree();useLayoutEffect(()=>{const c=camera as OrthographicCamera;const y=sceneView(kind,size.width<700,size.width,size.height).cameraY;c.zoom=size.height/8.85;c.position.set(0,y,15);c.lookAt(0,y,0);c.updateProjectionMatrix();invalidate()},[camera,size.width,size.height,invalidate,kind]);return null}
 function Background({env,mobile,reduced,onReady,sceneKind}:{env:EnvironmentState;sceneKind:SceneKind;mobile:boolean;reduced:boolean;onReady?:()=>void;onFallback?:()=>void}){
  const announced=useRef(false)
  useFrame(()=>{if(!announced.current){announced.current=true;onReady?.()}})
- const definition=scenes[sceneKind],view=sceneView(sceneKind,mobile)
- const [texture,farTexture]=useTexture([`/scene/${definition.mid}.webp`,`/scene/${definition.far}.webp`]),bg=useRef<Group>(null),far=useRef<Group>(null);texture.colorSpace=farTexture.colorSpace=SRGBColorSpace
+ const {size}=useThree(),definition=scenes[sceneKind],view=sceneView(sceneKind,mobile,size.width,size.height),mid=sceneMedia(sceneKind,mobile).mid
+ const [texture,farTexture]=useTexture([`/scene/${mid}.webp`,`/scene/${definition.far}.webp`]),bg=useRef<Group>(null),far=useRef<Group>(null);texture.colorSpace=farTexture.colorSpace=SRGBColorSpace
  const state=surfaceState(env),target=useMemo(()=>new Color(state.tint),[state.tint]);const tint=useRef(new Color('#fff'))
  const [winterSeen,setWinterSeen]=useState(false),[wetSeen,setWetSeen]=useState(false)
  useEffect(()=>{if(state.snow)setWinterSeen(true);if(state.wet)setWetSeen(true)},[state.snow,state.wet])
@@ -44,15 +44,15 @@ function Background({env,mobile,reduced,onReady,sceneKind}:{env:EnvironmentState
  const leaf=useMemo(()=>new Color(state.leaf),[state.leaf])
  useFrame(({pointer},dt)=>{const d=Math.min(dt,.05);tint.current.lerp(target,1-Math.exp(-d*1.5));material.color.copy(tint.current);farMaterial.color.copy(tint.current);shadow.opacity=state.night?.08:env.weather==='clear'?.14:.07;const shader=material.userData.shader;if(shader){shader.uniforms.seasonColour.value.lerp(leaf,1-Math.exp(-d));shader.uniforms.duskLight.value+=(state.dusk-shader.uniforms.duskLight.value)*d}if(far.current){far.current.position.x+=((reduced?0:-pointer.x*.055)-far.current.position.x)*d*2;far.current.position.y+=((reduced?0:-pointer.y*.022)-far.current.position.y)*d*2}})
  return <><color attach="background" args={['#ded7c8']}/>
- <group ref={bg} position={[view.x,view.y,-.4]} scale={[1,view.scaleY,1]}>
+ <group ref={bg} position={[view.x,view.y,-.4]} scale={[1,sceneKind==='courtyard'?view.scaleY:1,1]}>
  <group ref={far} position={[0,0,-1.4]} scale={1.02}><mesh material={farMaterial} raycast={()=>null}><planeGeometry args={[16.72,9.41]}/></mesh>
  {sceneKind==='garden'&&winterSeen&&<Suspense fallback={null}><WeatherSurface sceneKind={sceneKind} kind="winter" env={env} reduced={reduced}/></Suspense>}
  {sceneKind==='garden'&&wetSeen&&<Suspense fallback={null}><WeatherSurface sceneKind={sceneKind} kind="wet" env={env} reduced={reduced}/></Suspense>}
  </group>
- <mesh material={material} raycast={()=>null}><planeGeometry args={[16.72,9.41]}/></mesh>
+ <mesh material={material} scale={[view.scaleX,sceneKind==='garden'?view.scaleY:1,1]} raycast={()=>null}><planeGeometry args={[16.72,9.41]}/></mesh>
  {sceneKind==='courtyard'&&winterSeen&&<Suspense fallback={null}><WeatherSurface sceneKind={sceneKind} kind="winter" env={env} reduced={reduced}/></Suspense>}
  {sceneKind==='courtyard'&&wetSeen&&<Suspense fallback={null}><WeatherSurface sceneKind={sceneKind} kind="wet" env={env} reduced={reduced}/></Suspense>}
- <mesh position={[0,0,.04]} material={shadow} receiveShadow raycast={()=>null}><planeGeometry args={[16.72,9.41]}/></mesh></group>
+ <mesh position={[0,0,.04]} scale={[view.scaleX,sceneKind==='garden'?view.scaleY:1,1]} material={shadow} receiveShadow raycast={()=>null}><planeGeometry args={[16.72,9.41]}/></mesh></group>
  </>
 }
 function CourtyardLight({env,low}:{env:EnvironmentState;low:boolean}){
@@ -64,7 +64,7 @@ function CourtyardLight({env,low}:{env:EnvironmentState;low:boolean}){
 function Set({env,sceneKind,poems,onSelect,onHover,low,reduced,page,onReady,onFallback}:Props){
  const {size}=useThree(),mobile=size.width<700
  return <><CourtyardLight env={env} low={low}/>
- <TextureBoundary onFailure={onFallback} urls={[`/scene/${scenes[sceneKind].mid}.webp`,`/scene/${scenes[sceneKind].far}.webp`]}><Suspense fallback={null}><Background key={sceneKind} sceneKind={sceneKind} env={env} mobile={mobile} reduced={reduced} onReady={onReady}/></Suspense></TextureBoundary>
+ <TextureBoundary onFailure={onFallback} urls={[`/scene/${sceneMedia(sceneKind,mobile).mid}.webp`,`/scene/${scenes[sceneKind].far}.webp`]}><Suspense fallback={null}><Background key={sceneKind} sceneKind={sceneKind} env={env} mobile={mobile} reduced={reduced} onReady={onReady}/></Suspense></TextureBoundary>
  <Suspense fallback={null}><CourtyardBookmarks sceneKind={sceneKind} poems={poems} mobile={mobile} onSelect={onSelect} onHover={onHover} wind={env.windStrength} reduced={reduced} page={page}/></Suspense>
  <CourtyardAtmosphere sceneKind={sceneKind} env={env} reduced={reduced} low={low} mobile={mobile}/><CourtyardDetails sceneKind={sceneKind} env={env} reduced={reduced} low={low} mobile={mobile}/><TextureBoundary urls={['/scene/blossom-foreground.webp','/scene/blossom-summer.webp','/scene/blossom-winter.webp','/scene/garden-near.webp']}><Suspense fallback={null}><BlossomForeground sceneKind={sceneKind} env={env} reduced={reduced} mobile={mobile}/></Suspense></TextureBoundary><Layout kind={sceneKind}/>
  </>

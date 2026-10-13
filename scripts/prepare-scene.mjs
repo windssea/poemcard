@@ -8,4 +8,7 @@ await sharp('scene-source/layers/blossom-foreground.png').webp({quality:92,alpha
 for(const name of ['courtyard-winter','courtyard-wet','blossom-winter','blossom-summer'])await sharp(`scene-source/layers/${name}.png`).resize({width:1672,withoutEnlargement:true}).webp({quality:88,alphaQuality:100}).toFile(`public/scene/${name}.webp`)
 for(const name of ['courtyard-far','courtyard-mid','garden-v2-clean','garden-v2-far','garden-v2-mid','garden-v2-winter','garden-v2-wet','garden-near'])await sharp(`scene-source/layers/${name}.png`).resize({width:1672,withoutEnlargement:true}).webp({quality:88,alphaQuality:100}).toFile(`public/scene/${name}.webp`)
 await sharp('scene-source/layers/garden-v2-clean.png').resize({width:960}).webp({quality:64}).toFile('public/scene/garden-v2-preview.webp')
+await sharp('scene-source/layers/garden-mobile-mid.png').resize({width:941}).webp({quality:88,alphaQuality:100}).toFile('public/scene/garden-mobile-mid.webp')
+const gardenPortrait=await sharp('scene-source/layers/garden-v2-far.png').resize(941,1672,{fit:'cover'}).composite([{input:'scene-source/layers/garden-mobile-mid.png'}]).toBuffer()
+await sharp(gardenPortrait).resize({width:540}).webp({quality:64}).toFile('public/scene/garden-mobile-preview.webp')
 console.log('Prepared courtyard background from demo/bg.png')

@@ -1,12 +1,14 @@
 import {Suspense,useEffect,useMemo,useRef,useState} from 'react'
-import {useFrame} from '@react-three/fiber'
+import {useFrame,useThree} from '@react-three/fiber'
 import {useTexture} from '@react-three/drei'
 import {Color,Mesh,MeshBasicMaterial,SRGBColorSpace} from 'three'
 import type {EnvironmentState} from '../../domain/types'
 import {surfaceState} from '../environment/surface-state'
+import {sceneView} from '../environment/scenes'
 import type {SceneKind} from '../environment/scenes'
 type Props={env:EnvironmentState;reduced:boolean;mobile:boolean;sceneKind:SceneKind}
 function BranchLayer({env,reduced,mobile,variant}:{variant:'foreground'|'summer'|'winter'|'garden'}&Props){
+ const {size}=useThree(),view=sceneView(variant==='garden'?'garden':'courtyard',mobile,size.width,size.height)
  const texture=useTexture(variant==='garden'?'/scene/garden-near.webp':`/scene/blossom-${variant}.webp`),ref=useRef<Mesh>(null),time=useRef(0);texture.colorSpace=SRGBColorSpace
  const state=surfaceState(env),target=variant==='garden'?1:variant==='foreground'?(env.season==='spring'?1:0):variant==='summer'?(env.season==='summer'||env.season==='autumn'?1:0):(env.season==='winter'?1:0)
  const tint=useMemo(()=>new Color(state.tint),[state.tint])
@@ -26,8 +28,8 @@ function BranchLayer({env,reduced,mobile,variant}:{variant:'foreground'|'summer'
    `);m.userData.shader=shader};m.customProgramCacheKey=()=> 'blossom-season-v2';return m
  },[texture,variant])
  useEffect(()=>()=>material.dispose(),[material])
- useFrame(({pointer},dt)=>{const d=Math.min(dt,.05);if(!reduced&&!document.hidden)time.current+=d;const shader=material.userData.shader;if(shader){shader.uniforms.breezeTime.value=time.current;shader.uniforms.breezeStrength.value=reduced?0:env.windStrength;shader.uniforms.autumnLeaves.value+=((env.season==='autumn'?1:0)-shader.uniforms.autumnLeaves.value)*(1-Math.exp(-d*1.2))}material.opacity+=(target-material.opacity)*(1-Math.exp(-d*1.8));material.color.lerp(tint,1-Math.exp(-d*1.5));if(ref.current){ref.current.position.x+=((mobile?2.3:0)+(reduced?0:-pointer.x*.16)-ref.current.position.x)*d*3;ref.current.position.y+=((reduced?0:-pointer.y*.07)-ref.current.position.y)*d*3}})
- return <mesh ref={ref} material={material} position={[mobile?2.3:0,0,variant==='garden'?.2:1.6]} raycast={()=>null}><planeGeometry args={[16.72,9.41,32,16]}/></mesh>
+ useFrame(({pointer},dt)=>{const d=Math.min(dt,.05);if(!reduced&&!document.hidden)time.current+=d;const shader=material.userData.shader;if(shader){shader.uniforms.breezeTime.value=time.current;shader.uniforms.breezeStrength.value=reduced?0:env.windStrength;shader.uniforms.autumnLeaves.value+=((env.season==='autumn'?1:0)-shader.uniforms.autumnLeaves.value)*(1-Math.exp(-d*1.2))}material.opacity+=(target-material.opacity)*(1-Math.exp(-d*1.8));material.color.lerp(tint,1-Math.exp(-d*1.5));if(ref.current){ref.current.position.x+=(view.x+(reduced?0:-pointer.x*.16)-ref.current.position.x)*d*3;ref.current.position.y+=((reduced?0:-pointer.y*.07)-ref.current.position.y)*d*3}})
+ return <mesh ref={ref} material={material} position={[view.x,0,variant==='garden'?.2:1.6]} scale={[view.scaleX,variant==='garden'?view.scaleY:1,1]} raycast={()=>null}><planeGeometry args={[16.72,9.41,32,16]}/></mesh>
 }
 export function BlossomForeground(props:Props){
  const [summerSeen,setSummerSeen]=useState(false),[winterSeen,setWinterSeen]=useState(false)

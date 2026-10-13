@@ -43,7 +43,7 @@ export default function PoemViewer({id,onClose}:{id:string;onClose:()=>void}){
   <div className="scroll-content">
   {poem&&<div className={`immersive-stage ${imageReady?'expanded':''}`} aria-hidden={isReading} style={{left:layout.media.left,top:layout.media.top,width:layout.media.width,height:layout.media.height}}>
    <img src={mediaUrl(poem.media.artwork)} alt={`${poem.title}主题画`} onLoad={()=>setImageReady(true)} onError={()=>setError('主图加载失败，请稍后重试')}/>
-   <VideoCanvas ref={video} src={mediaUrl(poem.media.video.sources[0].src)} width={poem.media.video.width} height={poem.media.video.height} displayWidth={layout.media.width} displayHeight={layout.media.height} className={playing?'visible':''} onAspect={setRatio} onFrame={()=>{setPlaying(true);setError('')}} onError={()=>setError('视频暂时未能加载，请重试')}/>
+   <VideoCanvas ref={video} src={mediaUrl(poem.media.video.sources[0].src)} width={poem.media.video.width} height={poem.media.video.height} displayWidth={layout.media.width} displayHeight={layout.media.height} className={playing?'visible':''} onAspect={setRatio} onFrame={()=>{setPlaying(true);setError('')}} onError={()=>{setPlaying(false);setError('视频暂时未能加载，请重试')}}/>
   </div>}
   {poem&&layout.desktop&&layout.reading&&<section className="desktop-reading" aria-label="竖排诗词" tabIndex={0} style={{left:layout.reading.left,top:layout.reading.top,width:layout.reading.width,height:layout.reading.height}}><VerticalPoem poem={poem}/></section>}
   {isReading&&poem&&<section className="reading-page mobile-vertical-reading" aria-label="诗词阅读" tabIndex={0}><VerticalPoem poem={poem}/></section>}
