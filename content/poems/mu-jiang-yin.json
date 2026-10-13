@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "id": "mu-jiang-yin",
+  "title": "暮江吟",
+  "aliases": [],
+  "poetId": "bai-juyi",
+  "dynastyId": "tang",
+  "form": "七言绝句",
+  "tags": ["秋日", "江景", "夕照", "新月", "露珠"],
+  "stanzas": [{"id": "s1", "lines": [
+    {"id": "l1", "text": "一道残阳铺水中，"},
+    {"id": "l2", "text": "半江瑟瑟半江红。"},
+    {"id": "l3", "text": "可怜九月初三夜，"},
+    {"id": "l4", "text": "露似真珠月似弓。"}
+  ]}],
+  "famousLines": [{"id": "q1", "lineIds": ["l1", "l2"], "text": "一道残阳铺水中，半江瑟瑟半江红。"}],
+  "annotations": [
+    {"id": "a1", "term": "残阳", "text": "将落山的太阳余光。", "lineIds": ["l1"]},
+    {"id": "a2", "term": "瑟瑟", "text": "本指碧色珍宝，这里形容江水的碧绿色。", "lineIds": ["l2"]},
+    {"id": "a3", "term": "可怜", "text": "可爱。", "lineIds": ["l3"]},
+    {"id": "a4", "term": "九月初三", "text": "农历九月初三。", "lineIds": ["l3"]},
+    {"id": "a5", "term": "真珠", "text": "即珍珠，保留原文字形。", "lineIds": ["l4"]}
+  ],
+  "translations": [
+    {"id": "t1", "lineIds": ["l1", "l2"], "text": "夕阳的余光铺在江面，江水一半碧绿，一半映红。", "sourceIndex": 0},
+    {"id": "t2", "lineIds": ["l3", "l4"], "text": "九月初三的夜色多么可爱，露珠晶莹如珍珠，新月弯曲如弓。", "sourceIndex": 0}
+  ],
+  "appreciation": {"text": "前两句写夕照下江水的颜色，后两句转向初夜的露珠与新月。“铺”写出余晖贴着水面延展的柔和姿态，珠与弓的比喻则让细小景物清晰可见。", "sourceIndex": 0},
+  "background": {"text": "来源认为此诗约作于822年赴杭州任刺史途中，具体地点未定。", "year": 822, "place": null, "certainty": "approximate"},
+  "sources": [
+    {"title": "古诗文网：暮江吟", "url": "https://www.gushiwen.cn/shiwenv_0daa9748bcb5.aspx", "accessedAt": "2026-10-13", "verification": "verified", "scope": ["原文", "作者", "朝代", "注释", "译文概述", "创作背景", "赏析概述", "名句"]},
+    {"title": "用户提供的诗画资料", "path": "D:/dev/windssea/poem/output/poetry/暮江吟/poem-info.txt", "verification": "verified", "scope": ["素材对应关系", "书签名句", "艺术场景"]}
+  ],
+  "media": {
+    "bookmark": "poems/mu-jiang-yin/bookmark.webp",
+    "thumbnail": "poems/mu-jiang-yin/bookmark-thumb.webp",
+    "artwork": "poems/mu-jiang-yin/artwork.webp",
+    "video": {"poster": "poems/mu-jiang-yin/video-poster.webp", "sources": [{"src": "poems/mu-jiang-yin/motion.mp4", "type": "video/mp4", "quality": "original"}]}
+  },
+  "sceneHint": {"season": "autumn", "timeOfDay": 18, "weather": "clear", "windStrength": 0.2, "reason": "秋日江边从夕照转入初夜，江面余晖、露珠与新月相映。江湾、芦苇、岸林和低丘位置为艺术构图。"},
+  "published": true,
+  "sortOrder": 9
+}
