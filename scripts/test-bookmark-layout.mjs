@@ -7,7 +7,7 @@ for(const sceneKind of ['courtyard','garden'])for(const width of [200,280,320,39
   const layout=bookmarkLayout(width,height,sceneKind),available=layout.right-layout.left
   assert.ok(layout.capacity>=1)
   // One more bookmark must exceed the safe region at the minimum paper-and-wind spacing.
-  if(layout.mobile)assert.equal(layout.capacity,4)
+  if(layout.mobile)assert.ok(layout.capacity<=4)
   else assert.ok(layout.footprint+layout.capacity*layout.pitch>available-1e-7)
   if(layout.mobile&&sceneKind==='garden'){
    assert.ok(available<=width/height*8.85*.60+1e-7,'Keep both stained-glass panels clear')

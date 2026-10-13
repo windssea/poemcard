@@ -10,7 +10,7 @@ type Props={env:EnvironmentState;reduced:boolean;mobile:boolean;sceneKind:SceneK
 function BranchLayer({env,reduced,mobile,variant}:{variant:'foreground'|'summer'|'winter'|'garden'}&Props){
  const {size}=useThree(),view=sceneView(variant==='garden'?'garden':'courtyard',mobile,size.width,size.height)
  const texture=useTexture(variant==='garden'?'/scene/garden-near.webp':`/scene/blossom-${variant}.webp`),ref=useRef<Mesh>(null),time=useRef(0);texture.colorSpace=SRGBColorSpace
- const state=surfaceState(env),target=variant==='garden'?1:variant==='foreground'?(env.season==='spring'?1:0):variant==='summer'?(env.season==='summer'||env.season==='autumn'?1:0):(env.season==='winter'?1:0)
+ const state=surfaceState(env),target=variant==='garden'?(mobile?.42:1):variant==='foreground'?(env.season==='spring'?1:0):variant==='summer'?(env.season==='summer'||env.season==='autumn'?1:0):(env.season==='winter'?1:0)
  const tint=useMemo(()=>new Color(state.tint),[state.tint])
  const material=useMemo(()=>{
   const m=new MeshBasicMaterial({map:texture,transparent:true,opacity:variant==='foreground'||variant==='garden'?1:0,alphaTest:.015,depthWrite:false,toneMapped:false})
