@@ -6,17 +6,17 @@ export function bookmarkLayout(width:number,height:number,sceneKind:'courtyard'|
  const right=Math.min(halfWidth-inset,mobile?Infinity:sceneKind==='garden'?5.25:2.6)
  const available=Math.max(.01,right-left),cardHeight=mobile?2.1:2.65
  if(mobile){
-  const cardHeight=gardenMobile?3.8:4.6,cord=gardenMobile?.55:.18,tassel=.47,cameraY=gardenMobile?0:-1.25,anchor=gardenMobile?3.35:1
+  const cardHeight=4.6,cord=gardenMobile?.55:.18,tassel=.47,cameraY=gardenMobile?0:-1.25,anchor=gardenMobile?3.35:1
   const capacity=gardenMobile?Math.max(1,Math.min(4,Math.floor(width*.60/94))):4
   const bottom=cameraY-8.85/2+.85,verticalSpace=anchor-bottom
-  // Quiet mobile swing keeps four adjacent paper strips clear without wasting their width.
-  const rawFootprint=cardHeight*(gardenMobile?.68:1/3)+.11+2*(cardHeight+cord)*Math.sin(.024)
+  // Wind safety includes the full mobile swing around fixed hanging points.
+  const rawFootprint=cardHeight/3+.11+2*(cardHeight+cord)*Math.sin(.044)
   const gap=.075,scale=Math.min(1,(available-gap*(capacity-1))/capacity/rawFootprint,(gardenMobile?verticalSpace*.52:verticalSpace)/(cardHeight+cord+tassel))
   const safeScale=Math.max(.01,scale),footprint=rawFootprint*safeScale,pitch=footprint+gap
   return {mobile,left,right,scale:safeScale,footprint,pitch,capacity,cardHeight,cord,anchor,rowStep:0,bottom,cameraY}
  }
  // Full-strength gusts: rigid paper swings around its fixed cord end, not its centre.
- const halfFootprint=(cardHeight/3+.11)/2+(cardHeight+.31)*Math.sin(.085)
+ const halfFootprint=(cardHeight/3+.11)/2+(cardHeight+.31)*Math.sin(.12)
  const scale=Math.min(1,available/(halfFootprint*2)),footprint=halfFootprint*2*scale
  const pitch=footprint+.20*scale
  const capacity=Math.max(1,Math.floor((available-footprint+1e-8)/pitch)+1)

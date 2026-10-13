@@ -1,0 +1,15 @@
+{
+ "schemaVersion":1,"id":"ti-du-cheng-nan-zhuang","title":"题都城南庄","aliases":[],"poetId":"cui-hu","dynastyId":"tang","form":"七言绝句",
+ "tags":["春日","桃花","怀人","重访","怅惘"],
+ "stanzas":[{"id":"s1","lines":[{"id":"l1","text":"去年今日此门中，"},{"id":"l2","text":"人面桃花相映红。"},{"id":"l3","text":"人面不知何处去，"},{"id":"l4","text":"桃花依旧笑春风。"}]}],
+ "famousLines":[{"id":"q1","lineIds":["l3","l4"],"text":"人面不知何处去，桃花依旧笑春风。"}],
+ "annotations":[{"id":"a1","term":"都","text":"国都，这里指唐代京城长安。","lineIds":[]},{"id":"a2","term":"人面","text":"姑娘的面容；第三句用来指代姑娘。","lineIds":["l2","l3"]},{"id":"a3","term":"笑","text":"以人的笑容描写桃花盛放。","lineIds":["l4"]}],
+ "translations":[{"id":"t1","lineIds":["l1","l2"],"text":"去年这一天，在这扇门里见到的姑娘，脸庞与桃花交相映衬，分外红艳。","sourceIndex":0},{"id":"t2","lineIds":["l3","l4"],"text":"如今再来，姑娘不知去了哪里，门前桃花仍在春风里灿然开放。","sourceIndex":0}],
+ "appreciation":{"text":"诗从去年的相遇转到今日的重访。人面与桃花曾相互映照，如今花仍盛开，人却不见；相同的时节和地点，使记忆中的美好与眼前的失落格外鲜明。","sourceIndex":0},
+ "background":{"text":"具体写作时间不详。《本事诗》等记载崔护在长安南郊遇见少女，次年重访不遇而题诗；故事带有传奇色彩，缺少其他史料印证，不作为确定史实。","year":null,"place":"长安南郊","certainty":"disputed"},
+ "textVariants":[{"lineId":"l3","text":"人面秖今何处在，","note":"来源注释记载“不知”一作“秖今”，“去”一作“在”；正文采用“不知何处去”。","sourceIndex":0}],
+ "sources":[{"title":"古诗文网：题都城南庄","url":"https://www.guwendao.net/shiwenv_2449fc7a9986.aspx","accessedAt":"2026-10-13","verification":"verified","scope":["原文","作者","朝代","注释","异文","译文概述","创作背景及争议","赏析概述","名句"]},{"title":"用户提供的诗画资料","path":"D:/dev/windssea/poem/output/poetry/题都城南庄/poem-info.txt","verification":"verified","scope":["素材对应关系","艺术场景"]}],
+ "media":{"bookmark":"poems/ti-du-cheng-nan-zhuang/bookmark.webp","thumbnail":"poems/ti-du-cheng-nan-zhuang/bookmark-thumb.webp","artwork":"poems/ti-du-cheng-nan-zhuang/artwork.webp","video":{"poster":"poems/ti-du-cheng-nan-zhuang/video-poster.webp","sources":[{"src":"poems/ti-du-cheng-nan-zhuang/motion.mp4","type":"video/mp4","quality":"original"}]}},
+ "sceneHint":{"season":"spring","timeOfDay":10,"weather":"clear","windStrength":0.25,"reason":"春日重访庄院，门前桃花依旧盛开。闭门、文士站位、服饰与庄院形制为艺术构图，不是诗歌明述史实。"},
+ "published":true,"sortOrder":6
+}

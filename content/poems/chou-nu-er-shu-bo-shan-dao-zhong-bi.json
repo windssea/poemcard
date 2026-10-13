@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "chou-nu-er-shu-bo-shan-dao-zhong-bi",
+  "title": "丑奴儿·书博山道中壁",
+  "aliases": ["丑奴儿", "书博山道中壁"],
+  "poetId": "xin-qi-ji",
+  "dynastyId": "song",
+  "form": "词",
+  "tags": ["秋日", "山路", "忧愁", "人生", "怀才不遇"],
+  "stanzas": [
+    {"id":"s1","lines":[{"id":"l1","text":"少年不识愁滋味，"},{"id":"l2","text":"爱上层楼。"},{"id":"l3","text":"爱上层楼，"},{"id":"l4","text":"为赋新词强说愁。"}]},
+    {"id":"s2","lines":[{"id":"l5","text":"而今识尽愁滋味，"},{"id":"l6","text":"欲说还休。"},{"id":"l7","text":"欲说还休，"},{"id":"l8","text":"却道“天凉好个秋”！"}]}
+  ],
+  "famousLines": [{"id":"q1","lineIds":["l7","l8"],"text":"欲说还休，却道“天凉好个秋”！"}],
+  "annotations": [
+    {"id":"a1","term":"丑奴儿","text":"词牌名。","lineIds":[]},
+    {"id":"a2","term":"强","text":"读作 qiǎng，勉强地、硬要。","lineIds":["l4"]},
+    {"id":"a3","term":"识尽","text":"尝够了，深深懂得。","lineIds":["l5"]},
+    {"id":"a4","term":"休","text":"停止。","lineIds":["l6","l7"]}
+  ],
+  "translations": [
+    {"id":"t1","lineIds":["l1","l2","l3","l4"],"text":"年轻时还不懂忧愁，总喜欢登楼远望；为了写一阕新词，勉强把愁挂在嘴边。","sourceIndex":0},
+    {"id":"t2","lineIds":["l5","l6","l7","l8"],"text":"如今历经忧患，想倾诉却又停住，最后只说秋日天气凉爽。","sourceIndex":0}
+  ],
+  "appreciation": {"text":"上下片以少年和而今相对照，两组叠句呼应。从无愁而说愁到有愁却难以言说，结尾借谈天气收住话头，让沉重的心事藏在平常言语之中。","sourceIndex":0},
+  "background": {"text":"据来源，此词作于1181至1192年间，辛弃疾去职闲居带湖期间，题于博山道中的墙壁。具体年份不详。","year":null,"place":"博山道中","certainty":"verified"},
+  "textVariants": [],
+  "sources": [
+    {"title":"古诗文网：丑奴儿·书博山道中壁","url":"https://www.gushiwen.cn/shiwenv_2ee36eb2ccf7.aspx","accessedAt":"2026-10-13","verification":"verified","scope":["原文","作者","朝代","注释","译文概述","创作背景","赏析概述","名句"]},
+    {"title":"用户提供的诗画资料","path":"D:/dev/windssea/poem/output/poetry/丑奴儿·书博山道中壁/poem-info.txt","verification":"verified","scope":["素材对应关系","艺术场景"]}
+  ],
+  "media": {
+    "bookmark":"poems/chou-nu-er-shu-bo-shan-dao-zhong-bi/bookmark.webp",
+    "thumbnail":"poems/chou-nu-er-shu-bo-shan-dao-zhong-bi/bookmark-thumb.webp",
+    "artwork":"poems/chou-nu-er-shu-bo-shan-dao-zhong-bi/artwork.webp",
+    "video":{"poster":"poems/chou-nu-er-shu-bo-shan-dao-zhong-bi/video-poster.webp","sources":[{"src":"poems/chou-nu-er-shu-bo-shan-dao-zhong-bi/motion.mp4","type":"video/mp4","quality":"original"}]}
+  },
+  "sceneHint": {"season":"autumn","timeOfDay":16,"weather":"clear","windStrength":0.25,"reason":"以天凉好个秋营造秋日山路的艺术入境；文士站位、服饰、秋树色彩与远景层楼布局属于艺术推演。"},
+  "published": true,
+  "sortOrder": 7
+}

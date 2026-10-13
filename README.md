@@ -14,7 +14,7 @@ React 与 Three.js 临水诗画庭院原型。设计与阶段范围见 [设计�
 
 新增 CourtyardDetails：程序生成月面纹理的球体、不同深度的云雾片层、六角宫灯木框与流苏、暖色点光及灯晕。夜间月亮和宫灯渐亮，灯体绕固定挂点轻摆；手机保留一盏宫灯，轻量模式减少云层。顶部入口采用无底色的屋檐文字，检索及境候弹窗使用纤维宣纸纹理与紧凑排版。
 
-固定视角浏览，桌面每段数量根据可见红墙与风摆余量动态计算；手机每页最多四首，一行排列，压缩顶部景观并按可用宽度调整书签大小。书签使用 bookmark-v2.png；手机使用512px高清WebP与高像素比，桌面使用完整纹理，手机保持克制风摆，减少模糊和相邻遮挡。使用左右按钮、方向键或手机横滑切段；“寻诗”按诗名、诗人、朝代筛选，“境候”调整环境。当前已有《大林寺桃花》《定风波》《饮湖上初晴后雨》《赠刘景文》《夜雨寄北》五首。诗词从悬挂书签或寻诗面板打开。
+固定视角浏览，桌面每段数量根据可见红墙与风摆余量动态计算；手机每页最多四首，一行排列，压缩顶部景观并按可用宽度调整书签大小。书签使用 bookmark-v2.png；手机使用512px高清WebP与高像素比，桌面使用完整纹理，手机保持克制风摆，减少模糊和相邻遮挡。使用左右按钮、方向键或手机横滑切段；“寻诗”按诗名、诗人、朝代筛选，“境候”调整环境。当前已有《大林寺桃花》《定风波》《饮湖上初晴后雨》《赠刘景文》《夜雨寄北》《题都城南庄》《丑奴儿·书博山道中壁》《青玉案·元夕》八首。诗词从悬挂书签或寻诗面板打开。
 
 首屏优先预加载约49KB的庭院背景预览，图片显示即结束滴墨，不等待Three.js、书签和前景枝花。完整背景随后替换预览；书签按180ms错开请求并独立显示，不互相阻塞。诗卷组件和视频只在点击诗词后加载，首页不预取MP4。
 
@@ -47,7 +47,13 @@ npm run dev
 
 《赠刘景文》ID 为 zeng-liu-jing-wen，资料采用“最是”版本。原始素材来自 D:/dev/windssea/poem/output/poetry/赠刘景文，将 poster-v2.png、bookmark.png、video-v5/final.mp4 对应复制到同 ID 的 media-source/poems 目录下 artwork.png、bookmark.png、motion.mp4，运行 node scripts/prepare-media.mjs zeng-liu-jing-wen。
 
-《夜雨寄北》ID 为 ye-yu-ji-bei，唐代李商隐，原文采用“何当共剪西窗烛”。资料核对古诗文网，写作年份及收信人身份保留争议。原始素材来自 D:/dev/windssea/poem/output/poetry/夜雨寄北，将 bookmark-v2.png、painting-v2.png、video-v2/grok-raw.mp4 对应复制到 media-source/poems/ye-yu-ji-bei 下 bookmark-v2.png、artwork.png、motion.mp4。源视频720×1264、24fps，保留原帧率；入境为秋夜细雨。当前共五首，手机自动分成两页，每页最多四首；视频仅点击后加载。
+《夜雨寄北》ID 为 ye-yu-ji-bei，唐代李商隐，原文采用“何当共剪西窗烛”。资料核对古诗文网，写作年份及收信人身份保留争议。原始素材来自 D:/dev/windssea/poem/output/poetry/夜雨寄北，将 bookmark-v2.png、painting-v2.png、video-v2/grok-raw.mp4 对应复制到 media-source/poems/ye-yu-ji-bei 下 bookmark-v2.png、artwork.png、motion.mp4。源视频720×1264、24fps，保留原帧率；入境为秋夜细雨。当前共八首，手机自动分成两页，每页最多四首；视频仅点击后加载。
+
+《题都城南庄》ID 为 ti-du-cheng-nan-zhuang，唐代崔护，资料已核对古诗文网，正文采用“不知何处去”。原始素材来自 D:/dev/windssea/poem/output/poetry/题都城南庄，将 painting.png、bookmark.png、video/final.mp4 对应复制到 media-source/poems/ti-du-cheng-nan-zhuang 下 artwork.png、bookmark.png、motion.mp4。源视频720×1264、24fps，保留原帧率；入境为春日晴天。
+
+《丑奴儿·书博山道中壁》ID 为 chou-nu-er-shu-bo-shan-dao-zhong-bi，宋代辛弃疾，原文与资料已核对古诗文网。原始素材来自 D:/dev/windssea/poem/output/poetry/丑奴儿·书博山道中壁，将 painting.png、bookmark.png、video/final.mp4 对应复制到同 ID 的 media-source/poems 目录下 artwork.png、bookmark.png、motion.mp4。源视频720×1264、24fps，约8秒，保留原帧率；入境为秋日晴天。当前共八首，手机每页最多四首；视频仅点击后加载。
+
+《青玉案·元夕》ID 为 qing-yu-an-yuan-xi，宋代辛弃疾，原文与资料已核对古诗文网，保留“他”字，正文采用“宝马雕车香满路。”与“众里寻他千百度。”的标点。原始素材来自 D:/dev/windssea/poem/output/poetry/青玉案·元夕，将 painting.png、bookmark.png、video/final.mp4 对应复制到同 ID 的 media-source/poems 目录下 artwork.png、bookmark.png、motion.mp4。源视频720×1264、24fps，约8秒，保留原帧率；入境为春夜晴天。雪柳为头饰意象，非雪景。
 
 ## 部署
 

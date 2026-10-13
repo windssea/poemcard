@@ -22,7 +22,7 @@ function App(){
  const [sceneKind,setSceneKind]=useState<SceneKind>('courtyard'),[requestedScene,setRequestedScene]=useState<SceneKind>('courtyard')
  const onSceneReady=useCallback(()=>setSceneReady(true),[])
  const onSceneFallback=useCallback(()=>setSceneReady(false),[])
- const [env,setEnv]=useState<EnvironmentState>({season:'spring',timeOfDay:8,weather:'clear',windStrength:.35}),[enter,setEnter]=useState(true),[low,setLow]=useState(window.innerWidth<768),[reduced]=useState(matchMedia('(prefers-reduced-motion: reduce)').matches)
+ const [env,setEnv]=useState<EnvironmentState>({season:'spring',timeOfDay:8,weather:'clear',windStrength:.35}),[enter,setEnter]=useState(true),[low,setLow]=useState(false),[reduced]=useState(matchMedia('(prefers-reduced-motion: reduce)').matches)
  const [viewport,setViewport]=useState({width:window.innerWidth,height:window.innerHeight}),[page,setPage]=useState(0),[query,setQuery]=useState(''),[search,setSearch]=useState(false),[settings,setSettings]=useState(false)
  const galleryLayout=bookmarkLayout(viewport.width,viewport.height,sceneKind),mobile=galleryLayout.mobile,pageSize=galleryLayout.capacity
  const view=sceneView(sceneKind,mobile,viewport.width,viewport.height)

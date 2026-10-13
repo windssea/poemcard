@@ -1,0 +1,18 @@
+{
+ "schemaVersion":1,"id":"qing-yu-an-yuan-xi","title":"青玉案·元夕","aliases":["青玉案","元夕","东风夜放花千树"],"poetId":"xin-qi-ji","dynastyId":"song","form":"词",
+ "tags":["元宵","春夜","灯市","寻觅","孤高"],
+ "stanzas":[
+  {"id":"s1","lines":[{"id":"l1","text":"东风夜放花千树，"},{"id":"l2","text":"更吹落、星如雨。"},{"id":"l3","text":"宝马雕车香满路。"},{"id":"l4","text":"凤箫声动，"},{"id":"l5","text":"玉壶光转，"},{"id":"l6","text":"一夜鱼龙舞。"}]},
+  {"id":"s2","lines":[{"id":"l7","text":"蛾儿雪柳黄金缕，"},{"id":"l8","text":"笑语盈盈暗香去。"},{"id":"l9","text":"众里寻他千百度。"},{"id":"l10","text":"蓦然回首，"},{"id":"l11","text":"那人却在，"},{"id":"l12","text":"灯火阑珊处。"}]}
+ ],
+ "famousLines":[{"id":"q1","lineIds":["l10","l11","l12"],"text":"蓦然回首，那人却在，灯火阑珊处。"}],
+ "annotations":[{"id":"a1","term":"元夕","text":"农历正月十五的夜晚，即元宵之夜。","lineIds":[]},{"id":"a2","term":"星如雨","text":"形容烟花纷纷落下。","lineIds":["l2"]},{"id":"a3","term":"玉壶","text":"喻明月，也有指灯的解释。","lineIds":["l5"]},{"id":"a4","term":"鱼龙舞","text":"舞动鱼形、龙形彩灯。","lineIds":["l6"]},{"id":"a5","term":"蛾儿雪柳黄金缕","text":"元宵游女佩戴的头饰；雪柳在这里不指雪景。","lineIds":["l7"]},{"id":"a6","term":"他","text":"古代第三人称，也可指女性；保留原文字形。","lineIds":["l9"]},{"id":"a7","term":"阑珊","text":"暗淡、零落。","lineIds":["l12"]}],
+ "translations":[{"id":"t1","lineIds":["l1","l2","l3","l4","l5","l6"],"text":"元宵夜灯火如繁花，烟花似星雨。华美车马带着香气穿过街道，箫声与月色相伴，人们整夜舞着鱼龙彩灯。","sourceIndex":0},{"id":"t2","lineIds":["l7","l8","l9","l10","l11","l12"],"text":"戴着华丽头饰的游女笑着走过，留下淡淡衣香。我在人群中寻觅千百回，忽然回头，才发现那人站在灯火稀疏的地方。","sourceIndex":0}],
+ "appreciation":{"text":"上片铺写灯市的繁华，下片从游人转向寻觅，最后停在疏灯旁的那人身上。热闹与幽静的对照让结尾格外动人。“那人”的身份与寓意有多种解释，可读作寻人，也可体会其中独立自守的寄托。","sourceIndex":0},
+ "background":{"text":"来源将写作时间列为1174年或1175年，具体年份保留未定。词写元夕灯市与寻觅之情，“那人”的身份和寄托有多种解释。","year":null,"place":null,"certainty":"disputed"},
+ "textVariants":[{"lineId":"l3","adopted":"宝马雕车香满路。","alternative":"宝马雕车香满路，","sourceIndex":1,"note":"用户素材资料使用逗号，正文按古诗文网采用句号。"},{"lineId":"l9","adopted":"众里寻他千百度。","alternative":"众里寻他千百度；","sourceIndex":1,"note":"用户素材资料使用分号，正文按古诗文网采用句号；画面选录也使用句号。"}],
+ "sources":[{"title":"古诗文网：青玉案·元夕","url":"https://www.guwendao.net/shiwenv_51aa3a553057.aspx","accessedAt":"2026-10-13","verification":"verified","scope":["原文","作者","朝代","注释","译文概述","创作背景及争议","赏析概述","名句"]},{"title":"用户提供的诗画资料","path":"D:/dev/windssea/poem/output/poetry/青玉案·元夕/poem-info.txt","verification":"verified","scope":["素材对应关系","选录标点","艺术场景"]}],
+ "media":{"bookmark":"poems/qing-yu-an-yuan-xi/bookmark.webp","thumbnail":"poems/qing-yu-an-yuan-xi/bookmark-thumb.webp","artwork":"poems/qing-yu-an-yuan-xi/artwork.webp","video":{"poster":"poems/qing-yu-an-yuan-xi/video-poster.webp","sources":[{"src":"poems/qing-yu-an-yuan-xi/motion.mp4","type":"video/mp4","quality":"original"}]}},
+ "sceneHint":{"season":"spring","timeOfDay":21,"weather":"clear","windStrength":0.2,"reason":"元夕春夜的灯火与疏灯处回望。灯市街道、文士与女子站位、衣着及彩灯为艺术构图，不断言特定历史人物或对象身份；雪柳为头饰意象。"},
+ "published":true,"sortOrder":8
+}
