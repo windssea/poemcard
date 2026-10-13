@@ -52,13 +52,15 @@ function Background({env,mobile,reduced,onReady,sceneKind}:{env:EnvironmentState
  useFrame(({pointer},dt)=>{const d=Math.min(dt,.05);tint.current.lerp(target,1-Math.exp(-d*1.5));material.color.copy(tint.current);farMaterial.color.copy(tint.current);shadow.opacity=state.night?.08:env.weather==='clear'?.14:.07;const shader=material.userData.shader;if(shader){shader.uniforms.seasonColour.value.lerp(leaf,1-Math.exp(-d));shader.uniforms.duskLight.value+=(state.dusk-shader.uniforms.duskLight.value)*d}if(!reduced&&!document.hidden)depthTime.current+=d;if(far.current){const t=depthTime.current,amount=mobile?.65:1;far.current.position.x+=((reduced?0:-pointer.x*.18*amount+Math.sin(t*.19)*.045)-far.current.position.x)*(1-Math.exp(-d*1.6));far.current.position.y+=((reduced?0:-pointer.y*.075*amount+Math.sin(t*.13+.8)*.02)-far.current.position.y)*(1-Math.exp(-d*1.6))}})
  return <><color attach="background" args={['#ded7c8']}/>
  <group ref={bg} position={[view.x,view.y,-.4]} scale={[1,sceneKind==='courtyard'?view.scaleY:1,1]}>
- <group ref={far} position={[0,0,-2.4]} scale={1.06}><mesh material={farMaterial} raycast={()=>null}><planeGeometry args={[16.72,9.41]}/></mesh>
+ <group ref={far} position={[0,0,-2.4]} scale={[1.06*Math.max(1,view.scaleX),1.06,1.06]}><mesh material={farMaterial} raycast={()=>null}><planeGeometry args={[16.72,9.41]}/></mesh>
  {sceneKind==='garden'&&winterSeen&&<Suspense fallback={null}><WeatherSurface sceneKind={sceneKind} kind="winter" env={env} reduced={reduced}/></Suspense>}
  {sceneKind==='garden'&&wetSeen&&<Suspense fallback={null}><WeatherSurface sceneKind={sceneKind} kind="wet" env={env} reduced={reduced}/></Suspense>}
  </group>
  <mesh material={material} scale={[view.scaleX*(mobile?1.025:1),sceneKind==='garden'?view.scaleY*(mobile?1.015:1):1,1]} raycast={()=>null}><planeGeometry args={[16.72,9.41]}/></mesh>
+ <group scale={[view.scaleX,1,1]}>
  {sceneKind==='courtyard'&&winterSeen&&<Suspense fallback={null}><WeatherSurface sceneKind={sceneKind} kind="winter" env={env} reduced={reduced}/></Suspense>}
  {sceneKind==='courtyard'&&wetSeen&&<Suspense fallback={null}><WeatherSurface sceneKind={sceneKind} kind="wet" env={env} reduced={reduced}/></Suspense>}
+ </group>
  <mesh position={[0,0,.04]} scale={[view.scaleX,sceneKind==='garden'?view.scaleY:1,1]} material={shadow} receiveShadow raycast={()=>null}><planeGeometry args={[16.72,9.41]}/></mesh></group>
  </>
 }

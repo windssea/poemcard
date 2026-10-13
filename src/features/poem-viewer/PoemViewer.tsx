@@ -4,7 +4,7 @@ import {getPoem,mediaUrl} from '../../services/content'
 import './immersive.css'
 import './desktop-reading.css'
 import {scrollLayout} from './scroll-layout'
-import {VerticalPoem} from './VerticalPoem'
+import {PoemReading} from './PoemReading'
 import {VideoCanvas} from './VideoCanvas'
 import {InkLoader} from '../../components/InkLoader'
 const ScrollBackdrop=lazy(()=>import('./ScrollBackdrop'))
@@ -45,8 +45,8 @@ export default function PoemViewer({id,onClose}:{id:string;onClose:()=>void}){
    <img src={mediaUrl(poem.media.artwork)} alt={`${poem.title}主题画`} onLoad={()=>setImageReady(true)} onError={()=>setError('主图加载失败，请稍后重试')}/>
    <VideoCanvas ref={video} src={mediaUrl(poem.media.video.sources[0].src)} width={poem.media.video.width} height={poem.media.video.height} displayWidth={layout.media.width} displayHeight={layout.media.height} className={playing?'visible':''} onAspect={setRatio} onFrame={()=>{setPlaying(true);setError('')}} onError={()=>{setPlaying(false);setError('视频暂时未能加载，请重试')}}/>
   </div>}
-  {poem&&layout.desktop&&layout.reading&&<section className="desktop-reading" aria-label="竖排诗词" tabIndex={0} style={{left:layout.reading.left,top:layout.reading.top,width:layout.reading.width,height:layout.reading.height}}><VerticalPoem poem={poem}/></section>}
-  {isReading&&poem&&<section className="reading-page mobile-vertical-reading" aria-label="诗词阅读" tabIndex={0}><VerticalPoem poem={poem}/></section>}
+  {poem&&layout.desktop&&layout.reading&&<PoemReading poem={poem} className="desktop-reading" style={{left:layout.reading.left,top:layout.reading.top,width:layout.reading.width,height:layout.reading.height}}/>}
+  {isReading&&poem&&<PoemReading poem={poem} className="reading-page mobile-vertical-reading"/>}
   </div>
   {(opened||error)&&<div className="viewer-toolbar" style={{top:layout.sheet.top+4,left:layout.sheet.left+layout.side,right:viewport.width-layout.sheet.left-layout.sheet.width+layout.side,padding:0}}>
    {poem&&!layout.desktop&&<button className="mode-toggle" onClick={()=>setReading(!reading)} aria-label={isReading?'返回全屏诗画':'切换到读诗页面'}>{isReading?'观画':'读诗'}</button>}
